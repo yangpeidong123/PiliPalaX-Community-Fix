@@ -66,8 +66,6 @@ dependencies:
   permission_handler: ^11.0.1
   # 分享
   share_plus: ^10.0.2
-  # cookie 管理
-  webview_cookie_manager: ^2.0.6
   # 浏览器
   webview_flutter: ^4.2.2
   # 解决sliver滑动不同步

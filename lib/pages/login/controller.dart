@@ -10,7 +10,6 @@ import 'package:gt3_flutter_plugin/gt3_flutter_plugin.dart';
 import 'package:PiliPalaX/models/login/index.dart';
 import '../../utils/login.dart';
 import 'package:hive/hive.dart';
-import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 import '../../http/constants.dart';
 import '../../http/init.dart';
@@ -143,7 +142,6 @@ class LoginPageController extends GetxController
           .loadForRequest(Uri.parse(HttpString.apiBaseUrl)));
       Request.dio.options.headers['cookie'] = cookieStrings;
       print(Request.dio.options);
-      await WebviewCookieManager().setCookies(cookies);
     } catch (e) {
       SmartDialog.showToast('设置登录态失败，$e');
     }
