@@ -78,6 +78,8 @@ class ApiInterceptor extends Interceptor {
       case DioExceptionType.unknown:
         final String res = await checkConnect();
         return '$res网络异常 ${error.error}';
+      default:
+        return '未知错误，请稍后重试';
     }
   }
 
