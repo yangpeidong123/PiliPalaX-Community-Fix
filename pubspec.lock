@@ -1554,16 +1554,7 @@ packages:
       sha256: "73713990125a6d93122541237550ee3352a2d84baad52d375a4cad2eb9b7ce0b"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.11.1"
-  status_bar_control:
-    dependency: "direct main"
-    description:
-      name: status_bar_control
-      sha256: "7f2c1f3f7fd13b85ed284eb7ca3f74ceb8dcfdd25636d3a84186d0a687d36693"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.2.1"
-  stream_channel:
+    version: "1.11.1"  stream_channel:
     dependency: transitive
     description:
       name: stream_channel

@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:PiliPalaX/utils/download.dart';
 import 'controller.dart';
-import 'package:status_bar_control/status_bar_control.dart';
 
 typedef DoubleClickAnimationListener = void Function();
 
@@ -106,8 +105,7 @@ class _ImagePreviewState extends State<ImagePreview>
   // 隐藏状态栏，避免遮挡图片内容
   setStatusBar() async {
     if (Platform.isIOS || Platform.isAndroid) {
-      await StatusBarControl.setHidden(true,
-          animation: StatusBarAnimation.SLIDE);
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     }
   }
 
@@ -115,7 +113,7 @@ class _ImagePreviewState extends State<ImagePreview>
   void dispose() {
     // animationController.dispose();
     try {
-      StatusBarControl.setHidden(false, animation: StatusBarAnimation.SLIDE);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     } catch (_) {}
     _doubleClickAnimationController.dispose();
     clearGestureDetailsCache();

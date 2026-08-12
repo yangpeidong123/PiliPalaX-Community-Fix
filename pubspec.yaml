@@ -135,7 +135,7 @@ dependencies:
       url: https://github.com/orz12/canvas_danmaku.git
       ref: main
   # 状态栏图标控制
-  status_bar_control: ^3.2.1
+  # 状态栏控制
   # 代理
   system_proxy: ^0.1.0
   # 应用内悬浮窗
