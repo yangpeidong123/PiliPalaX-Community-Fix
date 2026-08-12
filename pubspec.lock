@@ -1554,7 +1554,8 @@ packages:
       sha256: "73713990125a6d93122541237550ee3352a2d84baad52d375a4cad2eb9b7ce0b"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.11.1"  stream_channel:
+    version: "1.11.1"
+  stream_channel:
     dependency: transitive
     description:
       name: stream_channel
