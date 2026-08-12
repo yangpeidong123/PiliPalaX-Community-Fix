@@ -1,0 +1,100 @@
+allprojects {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "http://download.flutter.io"
+            allowInsecureProtocol = true
+        }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    afterEvaluate { project ->
+        if (project.extensions.findByName("android") != null) {
+            Integer pluginCompileSdk = project.android.compileSdk
+            if (pluginCompileSdk != null && pluginCompileSdk < 31) {
+                project.logger.error(
+                    "Warning: Overriding compileSdk version in Flutter plugin: "
+                        + project.name
+                        + " from "
+                        + pluginCompileSdk
+                        + " to 31 (to work around https://issuetracker.google.com/issues/199180389)."
+                        + "\nIf there is not a new version of " + project.name + ", consider filing an issue against "
+                        + project.name
+                        + " to increase their compileSdk to the latest (otherwise try updating to the latest version)."
+                )
+                project.android {
+                    compileSdk 31
+                }
+            }
+        }
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    project.logger.error(
+                        "Warning: 'namespace' is not specified in Flutter plugin: "
+                            + project.name
+                            + ". Defaulting to the package name "
+                            + project.group
+                            + " of the plugin.\nSee "
+                            + "https://d.android.com/r/tools/upgrade-assistant/set-namespace"
+                            + "for information about setting the namespace."
+                    )
+                    namespace project.group
+                }
+            }
+
+            // Task to ensure namespace and remove package attribute
+            project.tasks.register("fixManifestsAndNamespace") {
+                doLast {
+                    // Ensure namespace in build.gradle
+                    def buildGradleFile = file("${project.projectDir}/build.gradle")
+                    if (buildGradleFile.exists()) {
+                        def buildGradleContent = buildGradleFile.getText('UTF-8')
+                        def manifestFile = file("${project.projectDir}/src/main/AndroidManifest.xml")
+                        if (manifestFile.exists()) {
+                            def manifestContent = manifestFile.getText('UTF-8')
+                            def packageName = manifestContent.find(/package="([^"]+)"/) { match, p -> p }
+                            if (packageName && !buildGradleContent.contains("namespace")) {
+                                println "Setting namespace in ${buildGradleFile}"
+                                buildGradleContent = buildGradleContent.replaceFirst(
+                                        /android\s*\{/, "android {\n    namespace '${packageName}'"
+                                )
+                                buildGradleFile.write(buildGradleContent, 'UTF-8')
+                            }
+                        }
+                    }
+
+                    // Remove package attribute from AndroidManifest.xml
+                    def manifests = fileTree(dir: project.projectDir, includes: ['**/AndroidManifest.xml'])
+                    manifests.each { File manifestFile ->
+                        def manifestContent = manifestFile.getText('UTF-8')
+                        if (manifestContent.contains('package=')) {
+                            println "Removing package attribute from ${manifestFile}"
+                            manifestContent = manifestContent.replaceAll(/package="[^"]*"/, '')
+                            manifestFile.write(manifestContent, 'UTF-8')
+                        }
+                    }
+                }
+            }
+
+            // Ensure the task runs before the build process
+            project.tasks.matching { it.name.startsWith("preBuild") }.all {
+                dependsOn project.tasks.named("fixManifestsAndNamespace")
+            }
+        }
+    }
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    kotlin_version = '2.1.0'
+}

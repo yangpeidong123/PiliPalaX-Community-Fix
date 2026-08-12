@@ -1,0 +1,257 @@
+name: Build alpha
+on:
+  workflow_dispatch:
+    inputs:
+      build_num:
+        required: true
+        type: choice
+        default: "1"
+        options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 114514]
+
+  push:
+    branches:
+      - 'dev'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '.github/**'
+      - '.idea/**'
+      - '!.github/workflows/alpha.yml'
+
+jobs:
+  prepare_publish_info:
+    name: Prepare publish info
+    runs-on: ubuntu-latest
+
+    outputs:
+      new_version: ${{ steps.update_version.outputs.new_version }}
+      included_commits: ${{ steps.analyze_push_event.outputs.included_commits }}
+      last_commit_hash: ${{ steps.analyze_push_event.outputs.last_commit_hash }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # TODO: 强制推送时日志为空
+      - name: 解析push事件信息
+        id: analyze_push_event
+        run: |
+          included_commits=$(git log ${{ github.event.before }}..HEAD --pretty="%h %s" --first-parent | jq -Rs '.')
+          last_commit_hash=$(git log -1 --pretty="%H" --first-parent)
+          echo "included_commits=$included_commits" >> $GITHUB_OUTPUT
+          echo "last_commit_hash=$last_commit_hash" >> $GITHUB_OUTPUT
+
+      - name: Get previous workflow run
+        id: get_previous_run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # TODO: 获取上一个workflow run运行状态以等待其artifact
+          # TODO: 包括上次失败workflow run中的提交
+          workflow_runs=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-alpha.yml/runs?status=completed&per_page=2")
+          previous_run_id=$(echo $workflow_runs | jq -r '.workflow_runs[0].id')
+          previous_run_success=0
+          if (echo $workflow_runs | jq -r '.workflow_runs[0].conclusion' | grep -q 'success'); then
+            previous_run_success=1
+          fi
+          echo "Previous run ID: $previous_run_id"
+          echo "previous_run_id=$previous_run_id" >> $GITHUB_OUTPUT
+          echo "Previous run success: $previous_run_success"
+          echo "previous_run_success=$previous_run_success" >> $GITHUB_OUTPUT
+
+      - name: 从artifact获取上次构建信息
+        if: ${{ ! inputs.build_num }}
+        uses: actions/download-artifact@v4
+        with:
+          name: build_info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ steps.get_previous_run.outputs.previous_run_id }}
+
+      - name: 生成alpha版本号
+        id: update_version
+        run: |
+          last_tag=$(git tag --sort=committerdate | tail -1)
+          version_name=$(yq e .version pubspec.yaml | cut -d "+" -f 1)
+          version_code=$(echo $last_tag | cut -d "+" -f 2)
+
+          if [[ ! -e build_info.yml && -z "${{ inputs.build_num }}" ]]; then
+            echo "Neither build_info.yml exists nor specified build_num manually!"
+            exit 1
+          fi
+          
+          # pubspec.yaml中版本号比tag新，则发布pre版，否则发布pre版
+          alpha_or_pre=alpha
+          if [[ "$version_name" > "$last_tag" ]]; then
+            alpha_or_pre=pre
+          else
+            version_name=$(echo $last_tag | egrep -o "^[0-9]+\.[0-9]+\.[0-9]+")
+          fi
+
+          # 如果上次workflow run失败，且与当前版本号一致，不递增build_num。
+          build_num=1
+          if [[ -n "${{ inputs.build_num }}" ]]; then
+            build_num=${{ inputs.build_num }}
+          elif [[ $(yq -r .version build_info.yml) == $version_name ]]; then
+            let build_num=$(yq -r .build_num build_info.yml)+${{ steps.get_previous_run.outputs.previous_run_success }}
+          fi
+
+          echo "new_version=${version_name}-${alpha_or_pre}.${build_num}+${version_code}" >> $GITHUB_OUTPUT
+          echo "version_name=$version_name" >> $GITHUB_OUTPUT
+          echo "build_num=$build_num" >> $GITHUB_OUTPUT                                      
+
+      - name: 生成新build_info.yml
+        run: |
+          version=${{ steps.update_version.outputs.version_name }}
+          build_num=${{ steps.update_version.outputs.build_num}}
+          
+          rm -f build_info.yml
+          cat << EOF > build_info.yml
+          version: $version
+          build_num: $build_num
+          EOF
+
+      - name: 上传build_info.yml
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_info
+          path: ./build_info.yml
+
+  build_matrix:
+    name: Build CI (${{ matrix.target_platform }})
+    needs: prepare_publish_info
+    runs-on: ${{ matrix.build_os }}
+    strategy:
+      matrix:
+        target_platform: [android-split-per-abi, android-universal, iOS]
+        include:
+          - build_os: ubuntu-latest
+          - target_platform: iOS
+            build_os: macos-latest
+              
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 安装Java环境
+        if: startsWith(matrix.target_platform, 'android')
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "21"
+          token: ${{ secrets.GIT_TOKEN }}
+
+      - name: 安装Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.24.4
+          channel: stable
+
+      - name: 修复Flutter 3.24中文字重异常
+        if: startsWith(matrix.target_platform, 'android')
+        working-directory: ${{ env.FLUTTER_ROOT }}
+        run: |
+          git config user.name "orz12"
+          git config user.email "orz12@test.com"
+          curl https://gist.githubusercontent.com/VillagerTom/077315c7101182af8bf443bb506007d0/raw/6c2c735a761f5e819672680bbefe473b748aa211/flutter-3.24.4-fix.diff | git apply
+          git commit -am "fix font weight issue"
+          # Flutter precache
+          flutter --version
+
+      - name: 下载项目依赖
+        run: flutter pub get
+
+      - name: 解码生成 jks
+        if: startsWith(matrix.target_platform, 'android')
+        run: echo $KEYSTORE_BASE64 | base64 -di > android/app/vvex.jks
+        env: 
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: 更新版本号
+        id: version
+        run: |
+          yq ".version=\"${{ needs.prepare_publish_info.outputs.new_version }}\"" pubspec.yaml > tmp.yaml
+          mv tmp.yaml pubspec.yaml
+
+      - name: flutter build apk (universal)
+        if: matrix.target_platform == 'android-universal'
+        run: flutter build apk --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: flutter build apk (${{ matrix.target_platform }})
+        if: startsWith(matrix.target_platform, 'android') && matrix.target_platform != 'android-universal'
+        run: flutter build apk --release --split-per-abi 
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: flutter build ipa
+        if: matrix.target_platform == 'iOS'
+        run: |
+          flutter build ios --release --no-codesign
+          ln -sf ./build/ios/iphoneos Payload
+          zip -r9 app.ipa Payload/runner.app
+
+      - name: 重命名安装包(${{ matrix.target_platform }})
+        if: startsWith(matrix.target_platform, 'android')
+        run: |
+          version_name=$(yq e .version pubspec.yaml | cut -d "+" -f 1)
+          for file in build/app/outputs/flutter-apk/app-*.apk; do
+            if [[ $file =~ app-(.?*)release.apk ]]; then
+              new_file_name="build/app/outputs/flutter-apk/Pili-${BASH_REMATCH[1]}${version_name}.apk"
+              mv "$file" "$new_file_name"
+            fi
+          done
+
+      - name: 重命名安装包(iOS)
+        if: matrix.target_platform == 'iOS'
+        run: |
+          for file in app.ipa; do
+            new_file_name="build/Pili-${{ needs.prepare_publish_info.outputs.new_version }}.ipa"
+            mv "$file" "$new_file_name"
+          done
+
+      - name: 上传至artifact (${{ matrix.target_platform }})
+        if: startsWith(matrix.target_platform, 'android')
+        uses: actions/upload-artifact@v4
+        with:
+          name: PiliPalaX-${{ matrix.target_platform }}
+          path: |
+            build/app/outputs/flutter-apk/Pili-*.apk
+
+      - name: 上传至artifact (iOS)
+        if: matrix.target_platform == 'iOS'
+        uses: actions/upload-artifact@v4
+        with: 
+          name: PiliPalaX-iOS
+          path: |
+            build/Pili-*.ipa
+
+  upload:
+    runs-on: ubuntu-latest
+    needs: 
+      - prepare_publish_info
+      - build_matrix
+    
+    steps:
+      - name: 从artifact下载
+        uses: actions/download-artifact@v4
+
+      - name: 发送到Telegram频道
+        uses: xireiki/channel-post@v1.0.10
+        with:
+          bot_token: ${{ secrets.BOT_TOKEN }}
+          chat_id: ${{ secrets.CHAT_ID }}
+          api_id: ${{ secrets.TELEGRAM_API_ID }}
+          api_hash: ${{ secrets.TELEGRAM_API_HASH }}
+          large_file: true
+          method: sendFile
+          path: PiliPalaX-*/*
+          parse_mode: HTML
+          context: "<b>v${{ needs.prepare_publish_info.outputs.new_version }}:</b>\n${{ fromJson(needs.prepare_publish_info.outputs.included_commits) }}"      

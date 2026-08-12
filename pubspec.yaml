@@ -1,0 +1,271 @@
+name: PiliPalaX
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.1.0+114514
+
+environment:
+  sdk: ">=2.19.6 <3.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.5
+  # 动态取色
+  dynamic_color: 1.7.0
+
+  get: ^4.6.5
+
+  # 网络
+  dio: ^5.3.3
+  cookie_jar: ^4.0.8
+  dio_cookie_manager: ^3.1.1
+  connectivity_plus: ^6.1.0
+  dio_http2_adapter: ^2.3.1+1
+
+  # 图片
+  cached_network_image: ^3.4.1
+  extended_image: ^8.2.0
+  saver_gallery: ^4.0.1
+
+  # QRCode
+  qr_flutter: ^4.1.0
+
+  # 存储
+  path_provider: ^2.1.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # 设备信息
+  device_info_plus: ^10.1.2
+  # 权限
+  permission_handler: ^11.0.1
+  # 分享
+  share_plus: ^10.0.2
+  # cookie 管理
+  webview_cookie_manager: ^2.0.6
+  # 浏览器
+  webview_flutter: ^4.2.2
+  # 解决sliver滑动不同步
+  extended_nested_scroll_view: ^6.1.2
+  # 上拉加载
+  loading_more_list: ^6.0.0
+  # 下拉刷新
+  pull_to_refresh_notification: ^3.0.1
+  # 图标
+  font_awesome_flutter: ^10.4.0
+  material_design_icons_flutter: ^7.0.7296
+  # toast
+  flutter_smart_dialog: ^4.9.7+8
+  # 下滑关闭
+  dismissible_page: ^1.0.2
+  custom_sliding_segmented_control: ^1.7.5
+  # 加密
+  crypto: ^3.0.3
+  encrypt: ^5.0.3
+
+  # 视频播放器
+  media_kit: ^1.1.11
+#    git:
+#      url: https://github.com/media-kit/media-kit.git
+#      ref: main
+#      path: media_kit
+  media_kit_video: ^1.2.5
+#    git:
+#      url: https://github.com/media-kit/media-kit.git
+#      ref: main
+#      path: media_kit_video
+  media_kit_libs_video: ^1.0.5
+#    git:
+#      url: https://github.com/media-kit/media-kit.git
+#      ref: main
+#      path: libs/universal/media_kit_libs_video
+  # 媒体通知
+  audio_service: ^0.18.15
+  audio_session: ^0.1.21
+
+  # 音量、亮度、屏幕控制
+  flutter_volume_controller: ^1.3.3
+  wakelock_plus: ^1.2.10
+  universal_platform: ^1.0.0+1
+  auto_orientation:
+    git:
+      url: https://github.com/orz12/auto_orientation.git
+      ref: master
+  protobuf: ^3.0.0
+  animations: ^2.0.8
+
+  # 获取appx信息
+  package_info_plus: ^8.0.2
+  url_launcher: ^6.1.14
+  flutter_svg: ^2.0.7
+  # 防抖节流
+  easy_debounce: ^2.0.3
+  # 高帧率
+  flutter_displaymode: ^0.6.0
+  # scheme跳转
+  app_links: 6.3.3
+  # 弹幕
+  canvas_danmaku:
+    git:
+      url: https://github.com/orz12/canvas_danmaku.git
+      ref: main
+  # 状态栏图标控制
+  status_bar_control: ^3.2.1
+  # 代理
+  system_proxy: ^0.1.0
+  # 应用内悬浮窗
+  flutter_floating:
+    git:
+      url: https://github.com/orz12/flutter_floating.git
+      ref: master
+  # pip
+  fl_pip:
+    git:
+      url: https://github.com/orz12/fl_pip.git
+      ref: main
+  # html解析
+  html: ^0.15.4
+  # html渲染
+  flutter_html: ^3.0.0-beta.2
+  # 极验
+  gt3_flutter_plugin: ^0.1.0
+  uuid: ^4.5.0
+  scrollable_positioned_list: ^0.3.8
+  nil: ^1.1.1
+  catcher_2: ^2.0.0-alpha.2
+  logger: ^2.0.2+1
+  path: ^1.9.0
+  #瀑布流
+  waterfall_flow: ^3.0.3
+  #跑马灯
+  marquee: ^2.2.3
+  #富文本
+  extended_text: ^14.0.1
+  # 调色板
+  flex_seed_scheme: ^3.4.1
+#  android_window: ^0.4.0
+dependency_overrides:
+#  mime:
+#    git:
+#      url: https://github.com/dart-lang/tools.git
+#      path: pkgs/mime
+#      ref: main
+  fading_edge_scrollview: ^4.1.1
+  rxdart: ^0.28.0
+  screen_brightness: ^2.1.1
+#  media_kit:
+#    git:
+#      url: https://github.com/media-kit/media-kit.git
+#      ref: main
+#      path: media_kit
+  custom_refresh_indicator: ^4.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+#  pigeon: ^22.6.1
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+  # flutter_launcher_icons:
+  #   git:
+  #     url: https://github.com/nvi9/flutter_launcher_icons.git
+  #     ref: e045d40
+  hive_generator: ^2.0.0
+  build_runner: ^2.3.3
+  flutter_native_splash: ^2.4.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: assets/images/logo/logo_android_2.png
+  image_path_android: assets/images/logo/logo_android_2.png
+  image_path_ios: assets/images/logo/logo_ios.png
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: assets/images/logo/logo_android_2.png
+  adaptive_icon_monochrome: assets/images/logo/logo_android_2.png
+  macos:
+    generate: true
+    image_path: assets/images/logo/logo_ios.png
+
+flutter_native_splash:
+  android_12:
+    color: "#ffffff"
+    color_dark: "#212121"
+  color: "#ffffff"
+  color_dark: "#212121"
+  image: assets/images/logo/logo_android_2.png
+  image_dark: assets/images/logo/logo_android_2.png
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/images/lv/
+    - assets/images/logo/
+    - assets/images/live/
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: fansCard
+      fonts:
+        - asset: assets/fonts/fansCard.ttf
+    - family: Jura-Bold
+      fonts:
+        - asset: assets/fonts/Jura-Bold.ttf
+    # - family: HarmonyOS
+    #   fonts:
+    #     - asset: assets/fonts/HarmonyOS_Sans_SC_Regular.ttf
+
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

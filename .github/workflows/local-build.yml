@@ -1,0 +1,57 @@
+name: Local Debug Build
+# 个人自用版：无需配置任何签名密钥，手动触发即可构建可直接安装的 APK。
+on:
+  workflow_dispatch:
+    inputs:
+      split_abi:
+        description: '是否按 CPU 架构拆分（减小体积，可选）'
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 安装Java环境
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: 安装Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.24.4
+          channel: stable
+
+      - name: 设置中文镜像源
+        run: |
+          echo "PUB_HOSTED_URL=https://pub.flutter-io.cn" >> $GITHUB_ENV
+          echo "FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn" >> $GITHUB_ENV
+
+      - name: 下载依赖
+        run: flutter pub get --enforce-lockfile
+
+      - name: 构建 Debug APK
+        run: |
+          if [ "${{ inputs.split_abi }}" == "true" ]; then
+            flutter build apk --debug --split-per-abi --no-pub
+            mkdir -p output
+            for file in build/app/outputs/flutter-apk/app-*-debug.apk; do
+              cp "$file" output/
+            done
+          else
+            flutter build apk --debug --no-pub
+            mkdir -p output
+            cp build/app/outputs/flutter-apk/app-debug.apk output/
+          fi
+
+      - name: 上传 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PiliPalaX-local-apk
+          path: output/
