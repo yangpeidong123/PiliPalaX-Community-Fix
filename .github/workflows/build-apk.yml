@@ -28,19 +28,11 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
 
-      - name: 安装 Flutter 3.24.4
+      - name: 安装 Flutter 3.29.0
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.4'
+          flutter-version: '3.29.0'
           channel: 'stable'
-
-      - name: 修复 Flutter 3.24 字体异常
-        working-directory: ${{ env.FLUTTER_ROOT }}
-        run: |
-          git config user.name "builder"
-          git config user.email "builder@test.com"
-          curl -sL https://gist.githubusercontent.com/VillagerTom/077315c7101182af8bf443bb506007d0/raw/6c2c735a761f5e819672680bbefe473b748aa211/flutter-3.24.4-fix.diff | git apply
-          git commit -am "fix font weight issue"
 
       - name: 下载依赖
         run: flutter pub get
