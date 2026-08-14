@@ -37,13 +37,35 @@ jobs:
       - name: 下载依赖
         run: flutter pub get
 
+      - name: 配置签名密钥库
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > android/app/vvex.p12
+            echo "签名密钥库已配置"
+          else
+            echo "未配置签名密钥库，使用 debug 签名"
+          fi
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
       - name: 编译 APK
         run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            export KEYSTORE=android/app/vvex.p12
+            export KEYSTORE_PASSWORD="$KEYSTORE_PW"
+            export KEY_ALIAS="$KEY_ALIAS"
+            export KEY_PASSWORD="$KEY_PW"
+          fi
           if [ "${{ github.event.inputs.build_type }}" = "debug" ]; then
             flutter build apk --debug
           else
             flutter build apk --release
           fi
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PW: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PW: ${{ secrets.KEY_PASSWORD }}
 
       - name: 重命名 APK
         run: |

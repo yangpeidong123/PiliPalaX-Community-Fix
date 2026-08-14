@@ -73,6 +73,7 @@ android {
             storePassword _storePassword
             keyAlias _keyAlias
             keyPassword _keyPassword
+            storeType 'PKCS12'
             v1SigningEnabled true
             v2SigningEnabled true
         }
