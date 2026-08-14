@@ -182,6 +182,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- 禁用 Impeller 渲染引擎，兼容旧 GPU（Android 8 及以下老机型） -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
