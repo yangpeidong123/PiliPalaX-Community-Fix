@@ -141,7 +141,7 @@ class VideoCardV extends StatelessWidget {
     String heroTag = Utils.makeHeroTag(videoItem.id);
     List<VideoCustomAction> actions =
         VideoCustomActions(videoItem, context).actions;
-    return Stack(children: [
+    return RepaintBoundary(child: Stack(children: [
       Semantics(
         label: Utils.videoItemSemantics(videoItem),
         excludeSemantics: true,
@@ -247,7 +247,7 @@ class VideoCardV extends StatelessWidget {
               iconSize: 17,
               actions: actions,
             )),
-    ]);
+    ]));
   }
 }
 

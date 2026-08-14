@@ -48,7 +48,7 @@ class VideoCardH extends StatelessWidget {
     List<VideoCustomAction> actions =
         VideoCustomActions(videoItem, context).actions;
     final String heroTag = Utils.makeHeroTag(aid);
-    return Stack(children: [
+    return RepaintBoundary(child: Stack(children: [
       Semantics(
           label: Utils.videoItemSemantics(videoItem),
           excludeSemantics: true,
@@ -178,7 +178,7 @@ class VideoCardH extends StatelessWidget {
           right: 10,
           child: VideoPopupMenu(size: 29, iconSize: 17, actions: actions),
         ),
-    ]);
+    ]));
   }
 }
 

@@ -150,6 +150,19 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      // 后台时降低功耗：暂停非必须的动画
+      animationController.stop();
+      // 如果设置了后台暂停，media_kit 的 Video 组件自动处理
+      // 同时降低亮度监听频率
+      _brightnessTimer?.cancel();
+    } else if (state == AppLifecycleState.resumed) {
+      // 回到前台恢复
+      if (widget.controller.showControls.value) {
+        animationController.forward();
+      }
+    }
     if (!Platform.isIOS) {
       super.didChangeAppLifecycleState(state);
       return;
@@ -612,18 +625,20 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       color: Colors.white,
       fontSize: 12,
     );
-    Widget video = Video(
-      key: ValueKey('${_.videoFit.value}${_.continuePlayInBackground.value}'
-          '${_.subtitleFontSize.value}${_.subtitleBottomPadding.value}'),
-      controller: videoController,
-      controls: NoVideoControls,
-      pauseUponEnteringBackgroundMode: !_.continuePlayInBackground.value,
-      resumeUponEnteringForegroundMode: true,
-      // 字幕尺寸调节
-      subtitleViewConfiguration: SubtitleViewConfiguration(
-          style: _.subtitleStyle.value,
-          padding: EdgeInsets.only(bottom: _.subtitleBottomPadding.value)),
-      fit: _.videoFit.value,
+    Widget video = RepaintBoundary(
+      child: Video(
+        key: ValueKey('${_.videoFit.value}${_.continuePlayInBackground.value}'
+            '${_.subtitleFontSize.value}${_.subtitleBottomPadding.value}'),
+        controller: videoController,
+        controls: NoVideoControls,
+        pauseUponEnteringBackgroundMode: !_.continuePlayInBackground.value,
+        resumeUponEnteringForegroundMode: true,
+        // 字幕尺寸调节
+        subtitleViewConfiguration: SubtitleViewConfiguration(
+            style: _.subtitleStyle.value,
+            padding: EdgeInsets.only(bottom: _.subtitleBottomPadding.value)),
+        fit: _.videoFit.value,
+      ),
     );
     return Stack(
       fit: StackFit.passthrough,
