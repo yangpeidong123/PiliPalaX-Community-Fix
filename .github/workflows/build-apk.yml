@@ -51,7 +51,8 @@ jobs:
       - name: 编译 APK
         run: |
           if [ -n "$KEYSTORE_BASE64" ]; then
-            export KEYSTORE=android/app/vvex.p12
+            # KEYSTORE 相对 android/app/ 目录（build.gradle 的 file() 基于模块目录）
+            export KEYSTORE=vvex.p12
             export KEYSTORE_PASSWORD="$KEYSTORE_PW"
             export KEY_ALIAS="$KEY_ALIAS"
             export KEY_PASSWORD="$KEY_PW"
