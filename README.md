@@ -7,6 +7,14 @@
     <img src="https://img.shields.io/badge/Android-5.0%2B-green" alt="Android">
     <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="GPLv3">
   </p>
+  <p>
+    <a href="https://github.com/yangpeidong123/PiliPalaX-Community-Fix/releases"><b>📥 下载 APK</b></a> ·
+    <a href="#创作历程">📖 优化记录</a> ·
+    <a href="#致谢">🙏 致谢</a>
+  </p>
+  <p>
+    <b>关键词：</b> B站客户端 · Bilibili · Flutter · 第三方 · 弹幕 · 开源 · Android · 低端机优化
+  </p>
 </div>
 
 ---
