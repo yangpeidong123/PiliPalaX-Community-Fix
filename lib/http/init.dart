@@ -194,7 +194,7 @@ class Request {
     }
 
     //添加拦截器
-    dio.interceptors.add(ApiInterceptor());
+    dio.interceptors.add(ApiInterceptor(dio));
 
     // 日志拦截器 输出请求、响应内容
     dio.interceptors.add(LogInterceptor(

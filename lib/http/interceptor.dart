@@ -1,55 +1,80 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+import 'dart:math' show pow;
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class ApiInterceptor extends Interceptor {
-  // @override
-  // void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-  //   print("请求之前");
-  //   // 在请求之前添加头部或认证信息
-  //   options.headers['Authorization'] = 'Bearer token';
-  //   options.headers['Content-Type'] = 'application/json';
-  //   handler.next(options);
-  // }
+  ApiInterceptor(this._dio);
 
-  // @override
-  // void onResponse(Response response, ResponseInterceptorHandler handler) {
-  //   try {
-  //     if (response.statusCode == 302) {
-  //       final List<String> locations = response.headers['location']!;
-  //       if (locations.isNotEmpty) {
-  //         if (locations.first.startsWith('https://www.mcbbs.net')) {
-  //           print('ApiInterceptor@@@@@: ${locations.first}');
-  //           final Uri uri = Uri.parse(locations.first);
-  //           final String? accessKey = uri.queryParameters['access_key'];
-  //           final String? mid = uri.queryParameters['mid'];
-  //           try {
-  //             Box localCache = GStorage.localCache;
-  //             localCache.put(LocalCacheKey.accessKey,
-  //                 <String, String?>{'mid': mid, 'value': accessKey});
-  //           } catch (_) {}
-  //         }
-  //       }
-  //     }
-  //   } catch (err) {
-  //     print('ApiInterceptor: $err');
-  //   }
+  final Dio _dio;
 
-  //   handler.next(response);
-  // }
+  /// 429 请求重试：最多重试 3 次，指数退避
+  static const int _maxRetries = 3;
+
+  /// 用于标记重试次数的 extra key，防止无限重试
+  static const String _retryCountKey = '_retryCount';
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // 处理网络请求错误
-    // handler.next(err);
-    String url = err.requestOptions.uri.toString();
-    print('🌹🌹ApiInterceptor: $url');
+    final String url = err.requestOptions.uri.toString();
+
+    // 获取当前重试次数
+    final int retryCount =
+        err.requestOptions.extra[_retryCountKey] as int? ?? 0;
+
     // 屏蔽弹幕、心跳、人数请求的错误提示
-    if (!url.contains('heartbeat') &&
-        !url.contains('seg.so') &&
-        !url.contains('online/total')) {
+    final bool isSilent = url.contains('heartbeat') ||
+        url.contains('seg.so') ||
+        url.contains('online/total');
+
+    // 429 限流 / 5xx 服务端错误：静默重试，不弹 Toast
+    final int? statusCode = err.response?.statusCode;
+    final bool shouldRetry = retryCount < _maxRetries &&
+        (statusCode == 429 ||
+            (statusCode != null && statusCode >= 500 && statusCode < 600));
+
+    if (shouldRetry) {
+      // 指数退避：1s, 2s, 4s
+      final int delayMs = 1000 * pow(2, retryCount).toInt();
+      await Future.delayed(Duration(milliseconds: delayMs));
+
+      try {
+        // 标记重试次数，防止无限循环
+        final RequestOptions newOptions = err.requestOptions.copyWith(
+          extra: {
+            ...err.requestOptions.extra,
+            _retryCountKey: retryCount + 1,
+          },
+        );
+        final response = await _dio.fetch(newOptions);
+        handler.resolve(response);
+        return;
+      } on DioException catch (e) {
+        // 重试后仍然失败，继续交给下一个处理器
+        if (!isSilent && (e.response?.statusCode == 429 ||
+            (e.response?.statusCode != null &&
+                e.response!.statusCode! >= 500 &&
+                e.response!.statusCode! < 600))) {
+          // 如果是 429/5xx 且重试次数耗尽，显示提示
+          if (retryCount + 1 >= _maxRetries && !isSilent) {
+            SmartDialog.showToast(
+              '请求频繁，请稍后重试',
+              displayType: SmartToastType.onlyRefresh,
+              displayTime: const Duration(milliseconds: 1200),
+            );
+          }
+        }
+        handler.next(e);
+        return;
+      }
+    }
+
+    // 其他错误弹 Toast 提示（弹幕/心跳/人数除外）
+    if (!isSilent) {
       SmartDialog.showToast(
         await dioError(err) + url,
         displayType: SmartToastType.onlyRefresh,
@@ -64,7 +89,10 @@ class ApiInterceptor extends Interceptor {
       case DioExceptionType.badCertificate:
         return '证书有误！';
       case DioExceptionType.badResponse:
-        return '服务器异常，请稍后重试！';
+        if (error.response?.statusCode == 429) {
+          return '请求过快，请稍后重试！';
+        }
+        return '服务器异常(${error.response?.statusCode})，请稍后重试！';
       case DioExceptionType.cancel:
         return '请求已被取消，请重新请求';
       case DioExceptionType.connectionError:
@@ -77,7 +105,7 @@ class ApiInterceptor extends Interceptor {
         return '发送请求超时，请检查网络设置';
       case DioExceptionType.unknown:
         final String res = await checkConnect();
-        return '$res网络异常 ${error.error}';
+        return '$res网络异常';
       default:
         return '未知错误，请稍后重试';
     }

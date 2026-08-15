@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import '../common/constants.dart';
 import '../models/common/reply_type.dart';
 import '../models/home/rcmd/result.dart';
@@ -34,6 +36,52 @@ class VideoHttp {
       setting.get(SettingBoxKey.enableRcmdDynamic, defaultValue: true);
   static Box userInfoCache = GStorage.userInfo;
 
+  /// 首页推荐缓存：API 限流时恢复数据
+  static File? _rcmdCacheFile;
+  static const String _rcmdCacheName = 'rcmd_raw_cache.json';
+
+  static Future<File> _getRcmdCacheFile() async {
+    if (_rcmdCacheFile != null) return _rcmdCacheFile!;
+    final dir = await getTemporaryDirectory();
+    _rcmdCacheFile = File('${dir.path}/$_rcmdCacheName');
+    return _rcmdCacheFile!;
+  }
+
+  /// 保存原始 API JSON 到本地
+  static Future<void> _saveRcmdCache(List<dynamic> items) async {
+    try {
+      final file = await _getRcmdCacheFile();
+      await file.writeAsString(json.encode(items));
+    } catch (_) {}
+  }
+
+  /// 从本地缓存加载并解析
+  static Future<List<RecVideoItemModel>> _loadRcmdCache() async {
+    try {
+      final file = await _getRcmdCacheFile();
+      if (!file.existsSync()) return [];
+      final List<dynamic> items = json.decode(await file.readAsString());
+      List<int> blackMidsList = onlineCache
+          .get(OnlineCacheKey.blackMidsList, defaultValue: [-1])
+          .map<int>((e) => e as int)
+          .toList();
+      List<RecVideoItemModel> list = [];
+      for (var i in items) {
+        if (i['goto'] == 'av' &&
+            (i['owner'] != null &&
+                !blackMidsList.contains(i['owner']['mid']))) {
+          RecVideoItemModel videoItem = RecVideoItemModel.fromJson(i);
+          if (!RecommendFilter.filter(videoItem)) {
+            list.add(videoItem);
+          }
+        }
+      }
+      return list;
+    } catch (_) {
+      return [];
+    }
+  }
+
   // 首页推荐视频
   static Future rcmdVideoList({required int ps, required int freshIdx}) async {
     var res = await Request().get(
@@ -54,6 +102,8 @@ class VideoHttp {
           .get(OnlineCacheKey.blackMidsList, defaultValue: [-1])
           .map<int>((e) => e as int)
           .toList();
+      // 保存原始 JSON 到本地缓存（用于 API 限流时恢复）
+      _saveRcmdCache(res.data['data']['item']);
       for (var i in res.data['data']['item']) {
         //过滤掉live与ad，以及拉黑用户
         if (i['goto'] == 'av' &&
@@ -67,6 +117,11 @@ class VideoHttp {
       }
       return {'status': true, 'data': list};
     } else {
+      // API 限流失败时，尝试从本地缓存恢复
+      final cachedList = await _loadRcmdCache();
+      if (cachedList.isNotEmpty) {
+        return {'status': true, 'data': cachedList, 'fromCache': true};
+      }
       return {'status': false, 'data': [], 'msg': res.data['message']};
     }
   }

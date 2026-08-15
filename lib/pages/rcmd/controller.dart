@@ -11,8 +11,6 @@ import 'package:PiliPalaX/utils/storage.dart';
 class RcmdController extends GetxController {
   final ScrollController scrollController = ScrollController();
   int _currentPage = 0;
-  // RxList<RecVideoItemAppModel> appVideoList = <RecVideoItemAppModel>[].obs;
-  // RxList<RecVideoItemModel> webVideoList = <RecVideoItemModel>[].obs;
   Box setting = GStorage.setting;
   RxInt crossAxisCount = 2.obs;
   late bool enableSaveLastData;
@@ -54,6 +52,18 @@ class RcmdController extends GetxController {
         );
     }
     if (res['status']) {
+      // API 限流时从缓存恢复，不增加页码也不追加
+      if (res['fromCache'] == true) {
+        if (videoList.isEmpty) {
+          videoList.value = res['data'];
+        }
+        SmartDialog.showToast(
+          '网络繁忙，显示缓存内容',
+          displayTime: const Duration(milliseconds: 800),
+        );
+        return res;
+      }
+
       if (type == 'init') {
         if (videoList.isNotEmpty) {
           videoList.addAll(res['data']);
@@ -81,7 +91,9 @@ class RcmdController extends GetxController {
         SmartDialog.showToast("仅请求到${res['data'].length}条");
       }
     } else {
-      SmartDialog.showToast("${res['msg']}，请尝试(重新)登录");
+      if (videoList.isEmpty) {
+        SmartDialog.showToast("${res['msg']}，请尝试(重新)登录");
+      }
     }
     return res;
   }

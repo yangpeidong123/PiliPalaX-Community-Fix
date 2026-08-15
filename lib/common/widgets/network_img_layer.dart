@@ -87,8 +87,33 @@ class NetworkImgLayer extends StatelessWidget {
           fadeOutDuration: fadeOutDuration ?? const Duration(milliseconds: 120),
           fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 120),
           filterQuality: FilterQuality.low,
-          errorWidget: (BuildContext context, String url, Object error) =>
-              placeholder(context),
+          // 添加 Referer 头，避免 B站 CDN 防盗链拦截
+          httpHeaders: const {
+            'Referer': 'https://www.bilibili.com/',
+            'User-Agent':
+                'Mozilla/5.0 (Linux; Android 8.0; vivo Y71A) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+          },
+          errorWidget: (BuildContext context, String url, Object error) {
+            // CDN 加载失败时，尝试去掉 WebP 参数使用原图
+            final String fallbackUrl = url.replaceAll(RegExp(r'@\d+q\.webp.*'), '');
+            if (fallbackUrl != url) {
+              return CachedNetworkImage(
+                imageUrl: fallbackUrl,
+                width: width,
+                height: ignoreHeight == null || ignoreHeight == false ? height : null,
+                memCacheWidth: memCacheWidth,
+                memCacheHeight: memCacheHeight,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.low,
+                httpHeaders: const {
+                  'Referer': 'https://www.bilibili.com/',
+                },
+                errorWidget: (_, __, ___) => placeholder(context),
+                placeholder: (_, __) => placeholder(context),
+              );
+            }
+            return placeholder(context);
+          },
           placeholder: (BuildContext context, String url) =>
               placeholder(context),
         ),
