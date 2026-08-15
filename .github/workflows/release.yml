@@ -16,11 +16,9 @@ jobs:
     runs-on: ${{ matrix.build_os }}
     strategy:
       matrix:
-        target_platform: [android-split-per-abi, android-universal, iOS]
+        target_platform: [android-universal]
         include:
           - build_os: ubuntu-latest
-          - target_platform: iOS
-            build_os: macos-latest
     outputs:
       new_version: ${{ steps.update_version.outputs.new_version }}
 
