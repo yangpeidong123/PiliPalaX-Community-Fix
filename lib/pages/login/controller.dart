@@ -83,7 +83,7 @@ class LoginPageController extends GetxController
             if (value['status']) {
               t.cancel();
               statusQRCode.value = '扫码成功';
-              debugPrint('$value['data']');
+              debugPrint('${value['data']}');
               await afterLoginByApp(
                   value['data'], value['data']['cookie_info']);
               Get.back();
@@ -366,7 +366,7 @@ class LoginPageController extends GetxController
                 getCaptcha(geeGt, geeChallenge, () async {
                   debugPrint("captchaData");
                   debugPrint('$captchaData');
-                  debugPrint('$currentUri.queryParameters['tmp_token']!');
+                  debugPrint('${currentUri.queryParameters['tmp_token']!}');
                   debugPrint('$geeChallenge');
 
                   var safeCenterSendSmsCodeRes =

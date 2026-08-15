@@ -893,7 +893,7 @@ class VideoHttp {
           .get(OnlineCacheKey.blackMidsList, defaultValue: [-1])
           .map<int>((e) => e as int)
           .toList();
-      debugPrint('$res.data['data']['archives']');
+      debugPrint('${res.data['data']['archives']}');
       for (var i in res.data['data']['archives']) {
         if (!blackMidsList.contains(i['owner']['mid'])) {
           list.add(HotVideoItemModel.fromJson(i));

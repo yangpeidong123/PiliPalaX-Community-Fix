@@ -575,7 +575,7 @@ class PlPlayerController {
       }
     } catch (err, stackTrace) {
       dataStatus.status.value = DataStatus.error;
-      debugPrint('$stackTrace.toString('));
+      debugPrint('$stackTrace');
       debugPrint('plPlayer err:  $err');
     }
   }
@@ -1767,7 +1767,7 @@ class PlPlayerController {
       return;
     }
     Map<String, String> s = _vttSubtitles[index];
-    debugPrint('$s['text']');
+    debugPrint('${s['text']}');
     _videoPlayerController?.setSubtitleTrack(SubtitleTrack.data(
       s['text']!,
       title: s['title']!,

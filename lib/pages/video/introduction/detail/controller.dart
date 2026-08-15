@@ -218,7 +218,7 @@ class VideoIntroController extends GetxController {
   Future queryUserStat() async {
     var result = await UserHttp.userStat(mid: videoDetail.value.owner!.mid!);
     if (result['status']) {
-      debugPrint('$result['data']');
+      debugPrint('${result['data']}');
       userStat.value = result['data'];
       userStat.refresh();
     }

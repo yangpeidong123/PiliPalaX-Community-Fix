@@ -305,7 +305,7 @@ class DynamicsController extends GetxController
 
   onRefresh() async {
     debugPrint('onRefresh');
-    debugPrint('$tabsConfig[tabController.index]['ctr']');
+    debugPrint('${tabsConfig[tabController.index]['ctr']}');
     await Future.wait(<Future>[
       queryFollowUp(),
       tabsConfig[tabController.index]['ctr'].onRefresh()
