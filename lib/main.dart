@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/rendering.dart';
 // import 'package:PiliPalaX/plugin/pl_player/android_window.dart';
 import 'package:PiliPalaX/plugin/pl_player/view.dart';
@@ -111,21 +110,26 @@ void main() async {
 
   // 根据设备内存动态调整图片缓存，避免低端机 OOM
   try {
-    final deviceInfo = DeviceInfoPlugin();
-    final androidInfo = await deviceInfo.android;
-    // totalPhysicalMemory 在 Android 上返回字节
-    final totalMemMB = (androidInfo.data['totalPhysicalMemory'] ?? 0) as int;
-    if (totalMemMB > 0 && totalMemMB < 4 * 1024) {
-      // 低端机（<4GB RAM）：100 张 / 50MB
-      PaintingBinding.instance.imageCache.maximumSize = 100;
-      PaintingBinding.instance.imageCache.maximumSizeBytes = 50 << 20;
+    // 读取 /proc/meminfo 获取设备总内存
+    final memInfo = await File('/proc/meminfo').readAsString();
+    final match = RegExp(r'MemTotal:\s+(\d+)').firstMatch(memInfo);
+    if (match != null) {
+      final totalMemKB = int.parse(match.group(1)!);
+      final totalMemMB = totalMemKB ~/ 1024;
+      if (totalMemMB < 3072) {
+        // 低端机（<3GB RAM）：100 张 / 50MB
+        PaintingBinding.instance.imageCache.maximumSize = 100;
+        PaintingBinding.instance.imageCache.maximumSizeBytes = 50 << 20;
+      } else {
+        // 中高端机：500 张 / 200MB
+        PaintingBinding.instance.imageCache.maximumSize = 500;
+        PaintingBinding.instance.imageCache.maximumSizeBytes = 200 << 20;
+      }
     } else {
-      // 中高端机：500 张 / 200MB
-      PaintingBinding.instance.imageCache.maximumSize = 500;
-      PaintingBinding.instance.imageCache.maximumSizeBytes = 200 << 20;
+      PaintingBinding.instance.imageCache.maximumSize = 200;
+      PaintingBinding.instance.imageCache.maximumSizeBytes = 80 << 20;
     }
   } catch (_) {
-    // 获取失败时用保守值
     PaintingBinding.instance.imageCache.maximumSize = 200;
     PaintingBinding.instance.imageCache.maximumSizeBytes = 80 << 20;
   }
