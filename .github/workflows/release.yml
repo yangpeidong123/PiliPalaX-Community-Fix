@@ -129,6 +129,8 @@ jobs:
     name: Upload Release
     runs-on: ubuntu-latest
     needs: build_matrix
+    permissions:
+      contents: write
 
     steps:
       - name: 从Artifacts下载
