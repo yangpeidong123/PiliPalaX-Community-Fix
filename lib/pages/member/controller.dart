@@ -56,7 +56,7 @@ class MemberController extends GetxController with GetTickerProviderStateMixin {
     // await getMemberView();
     // await getWwebid();
     var res = await MemberHttp.memberInfo(mid: mid);
-    print(res);
+    debugPrint(res);
     if (res['status']) {
       memberInfo.value = res['data'];
       relationSearch();
@@ -274,4 +274,10 @@ class MemberController extends GetxController with GetTickerProviderStateMixin {
   // void pushRecentCoinsPage() async {
   //   if (recentCoinsList.isNotEmpty) {}
   // }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 }

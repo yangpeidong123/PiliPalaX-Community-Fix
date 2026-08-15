@@ -90,4 +90,11 @@ class FavSearchController extends GetxController {
       SmartDialog.showToast('取消收藏');
     }
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    controller.dispose();
+    super.onClose();
+  }
 }

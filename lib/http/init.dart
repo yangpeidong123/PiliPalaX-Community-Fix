@@ -87,7 +87,7 @@ class Request {
     List<Cookie> cookies = await cookieManager.cookieJar
         .loadForRequest(Uri.parse(HttpString.apiBaseUrl));
     // String token = '';
-    print("cookies $cookies");
+    debugPrint("cookies $cookies");
     if (cookies.where((e) => e.name == 'Buvid').isNotEmpty) {
       return cookies.firstWhere((e) => e.name == 'Buvid').value;
     }
@@ -172,7 +172,7 @@ class Request {
           return client;
         };
       }
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
 
     /// 设置代理
     if (enableSystemProxy) {
@@ -284,11 +284,11 @@ class Request {
         //进度
         // print("$count $total");
       });
-      print('downloadFile success: ${response.data}');
+      debugPrint('downloadFile success: ${response.data}');
 
       return response.data;
     } on DioException catch (e) {
-      print('downloadFile error: $e');
+      debugPrint('downloadFile error: $e');
       return Future.error(ApiInterceptor.dioError(e));
     }
   }

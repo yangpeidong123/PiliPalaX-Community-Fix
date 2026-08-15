@@ -429,7 +429,7 @@ class AboutController extends GetxController {
         mode: LaunchMode.externalApplication,
       );
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
   }
 

@@ -87,12 +87,18 @@ class WhisperDetailController extends GetxController {
       msgType: 1,
     );
     if (result['status']) {
-      print(result['data']);
+      debugPrint(result['data']);
       querySessionMsg();
       replyContentController.text = "";
       SmartDialog.showToast('发送成功');
     } else {
       SmartDialog.showToast(result['msg']);
     }
+  }
+
+  @override
+  void onClose() {
+    replyContentController.dispose();
+    super.onClose();
   }
 }

@@ -179,7 +179,7 @@ class DanmakuBlockController extends GetxController
       }
       return e.toMap();
     }).toList();
-    print("simpleRuleList:$simpleRuleList");
+    debugPrint("simpleRuleList:$simpleRuleList");
     onlineCache.put(OnlineCacheKey.danmakuFilterRule, simpleRuleList);
     PlDanmakuController.refresh();
   }

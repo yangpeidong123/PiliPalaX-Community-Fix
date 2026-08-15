@@ -79,7 +79,9 @@ Widget searchUserPanel(BuildContext context, ctr, list) {
               ),
             );
           },
-          childCount: list!.length,
+          addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list!.length,
         ))
   ]);
 }

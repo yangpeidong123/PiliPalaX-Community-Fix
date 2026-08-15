@@ -143,7 +143,7 @@ InlineSpan? richNode(item, context) {
                         'pageTitle': '投票'
                       },
                     );
-                  } catch (_) {}
+                  } catch (e) { debugPrint('catch error: $e'); }
                 },
                 child: Text(
                   '投票：${i.text}',

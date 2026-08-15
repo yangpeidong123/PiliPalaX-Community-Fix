@@ -64,7 +64,9 @@ class _RelatedVideoPanelState extends State<RelatedVideoPanel>
                           ),
                         );
                       }
-                    }, childCount: relatedVideoList.length + 1),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: relatedVideoList.length + 1),
                   ),
                 );
               } else {
@@ -85,7 +87,9 @@ class _RelatedVideoPanelState extends State<RelatedVideoPanel>
                     mainAxisExtent: 0),
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return const VideoCardHSkeleton();
-                }, childCount: 5),
+                }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 5),
               );
             }
           },

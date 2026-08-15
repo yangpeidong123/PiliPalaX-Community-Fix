@@ -64,7 +64,7 @@ class CacheManage {
     } catch (e) {
       // 忽略找不到文件的错误
       if (e is! PathNotFoundException) {
-        print('Error retrieving size for ${file.path}: $e');
+        debugPrint('Error retrieving size for ${file.path}: $e');
       }
     }
     return total;

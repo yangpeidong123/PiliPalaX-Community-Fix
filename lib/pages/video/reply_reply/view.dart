@@ -218,7 +218,9 @@ class _VideoReplyReplyPanelState extends State<VideoReplyReplyPanel> {
                                         );
                                       }
                                     },
-                                    childCount: _videoReplyReplyController
+                                    addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: _videoReplyReplyController
                                             .replyList.length +
                                         1,
                                   ),
@@ -239,7 +241,9 @@ class _VideoReplyReplyPanelState extends State<VideoReplyReplyPanel> {
                           delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                             return const VideoReplySkeleton();
-                          }, childCount: 8),
+                          }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 8),
                         );
                       }
                     },

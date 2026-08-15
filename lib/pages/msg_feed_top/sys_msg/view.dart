@@ -69,7 +69,7 @@ class _SysMsgPageState extends State<SysMsgPage> {
                         if (jsonContent != null && jsonContent['web'] != null) {
                           content = jsonContent['web'];
                         }
-                      } catch (_) {}
+                      } catch (e) { debugPrint('catch error: $e'); }
                     }
                     return ListTile(
                         onTap: () {},

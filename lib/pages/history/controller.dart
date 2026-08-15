@@ -184,7 +184,7 @@ class HistoryController extends GetxController {
                   String str = 'archive';
                   try {
                     str = i.history!.business!;
-                  } catch (_) {}
+                  } catch (e) { debugPrint('catch error: $e'); }
                   String resKid = '${str}_${i.kid}';
                   await UserHttp.delHistory(resKid);
                   historyList.removeWhere((e) => e.kid == i.kid);
@@ -199,5 +199,11 @@ class HistoryController extends GetxController {
         );
       },
     );
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

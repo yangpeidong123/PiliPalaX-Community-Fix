@@ -469,10 +469,10 @@ class PlPlayerController {
         // bool isActive = (await FlPiP().isActive)?.status == PiPStatus.enabled;
         // if (isActive) return;
         FlPiP().setEnableWhenBackground(false);
-        print('disable pip EnableWhenBackground');
+        debugPrint('disable pip EnableWhenBackground');
         return;
       }
-      print('enable pip');
+      debugPrint('enable pip');
       FlPiP().enable(
         ios: FlPiPiOSConfig(
             enabledWhenBackground: true,
@@ -487,7 +487,7 @@ class PlPlayerController {
           ),
         ),
       );
-      print('enabled pip');
+      debugPrint('enabled pip');
     });
   }
 
@@ -576,7 +576,7 @@ class PlPlayerController {
     } catch (err, stackTrace) {
       dataStatus.status.value = DataStatus.error;
       debugPrint(stackTrace.toString());
-      print('plPlayer err:  $err');
+      debugPrint('plPlayer err:  $err');
     }
   }
 
@@ -821,7 +821,7 @@ class PlPlayerController {
         }),
         videoPlayerController!.stream.completed.listen((event) {
           if (event) {
-            print("stream completed");
+            debugPrint("stream completed");
             playerStatus.status.value = PlayerStatus.completed;
 
             /// 触发回调事件
@@ -884,13 +884,13 @@ class PlPlayerController {
             EasyThrottle.throttle('videoPlayerController!.stream.error.listen',
                 const Duration(milliseconds: 10000), () {
               Future.delayed(const Duration(milliseconds: 3000), () async {
-                print("isBuffering.value: ${isBuffering.value}");
-                print("_buffered.value: ${_buffered.value}");
+                debugPrint("isBuffering.value: ${isBuffering.value}");
+                debugPrint("_buffered.value: ${_buffered.value}");
                 if (isBuffering.value && _buffered.value == Duration.zero) {
                   SmartDialog.showToast('视频链接打开失败，重试中',
                       displayTime: const Duration(milliseconds: 500));
                   if (!await refreshPlayer()) {
-                    print("failed");
+                    debugPrint("failed");
                   }
                 }
               });
@@ -976,7 +976,7 @@ class PlPlayerController {
       //   play();
       // }
     } else {
-      print('seek duration else');
+      debugPrint('seek duration else');
       _timerForSeek?.cancel();
       _timerForSeek =
           Timer.periodic(const Duration(milliseconds: 200), (Timer t) async {
@@ -1006,7 +1006,7 @@ class PlPlayerController {
     //   DanmakuOption updatedOption = currentOption.copyWith(
     //       duration: ((defaultDuration! / speed) * playbackSpeed).round());
     //   danmakuController!.updateOption(updatedOption);
-    // } catch (_) {}
+    // } catch (e) { debugPrint('catch error: $e'); }
     // fix 长按倍速后放开不恢复
     if (doubleSpeedStatus.value == 0) {
       _playbackSpeed.value = speed;
@@ -1078,7 +1078,7 @@ class PlPlayerController {
   void disable() async {
     if (floatingManager.containsFloating(globalId)) return;
     String top = Get.currentRoute;
-    print("top:$top");
+    debugPrint("top:$top");
     if (!top.startsWith('/video') && !top.startsWith('/live')) {
       // playerStatus.status.value = PlayerStatus.disabled;
       _heartDuration = 0;
@@ -1139,7 +1139,7 @@ class PlPlayerController {
     // mac try...catch
     try {
       _currentVolume.value = (await FlutterVolumeController.getVolume())!;
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
   }
 
   Future<void> setVolume(double volumeNew,
@@ -1158,7 +1158,7 @@ class PlPlayerController {
       FlutterVolumeController.updateShowSystemUI(false);
       await FlutterVolumeController.setVolume(volumeNew);
     } catch (err) {
-      print(err);
+      debugPrint(err);
     }
   }
 
@@ -1323,7 +1323,7 @@ class PlPlayerController {
         });
       }
     } else {
-      print("playbackSpeed: $playbackSpeed");
+      debugPrint("playbackSpeed: $playbackSpeed");
       _doubleSpeedStatus.value = 0;
       await setPlaybackSpeed(playbackSpeed);
     }
@@ -1371,9 +1371,9 @@ class PlPlayerController {
       );
     }
 
-    print("enterPip");
-    print(videoIntroController);
-    print(bangumiIntroController);
+    debugPrint("enterPip");
+    debugPrint(videoIntroController);
+    debugPrint(bangumiIntroController);
     bool isLive =
         videoIntroController == null && bangumiIntroController == null;
     double? videoHeight = videoPlayerController?.state.height?.toDouble();
@@ -1388,10 +1388,10 @@ class PlPlayerController {
         aspectRatio = videoHeight / videoWidth;
       }
     }
-    print('videoHeight: $videoHeight');
-    print('videoWidth: $videoWidth');
-    print('direction.value: ${direction.value}');
-    print('aspectRatio: $aspectRatio');
+    debugPrint('videoHeight: $videoHeight');
+    debugPrint('videoWidth: $videoWidth');
+    debugPrint('direction.value: ${direction.value}');
+    debugPrint('aspectRatio: $aspectRatio');
     double floatingWidth = aspectRatio > 1 ? 150.0 : 240.0;
     double extentHeight = 40.0;
     double floatingHeight = floatingWidth * aspectRatio + extentHeight;
@@ -1525,8 +1525,8 @@ class PlPlayerController {
         VideoDetailController? videoDetailCtr;
         try {
           videoDetailCtr = Get.find<VideoDetailController>(tag: heroTag);
-        } catch (_) {}
-        print("videoDetailCtr: $videoDetailCtr");
+        } catch (e) { debugPrint('catch error: $e'); }
+        debugPrint("videoDetailCtr: $videoDetailCtr");
         if (videoDetailCtr != null) {
           videoDetailCtr.defaultST = position.value;
         }
@@ -1700,7 +1700,7 @@ class PlPlayerController {
       _instance = null;
       videoPlayerServiceHandler.clear();
     } catch (err) {
-      print(err);
+      debugPrint(err);
     }
   }
 

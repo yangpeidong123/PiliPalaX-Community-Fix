@@ -40,7 +40,7 @@ Widget addWidget(item, context, type, {floor = 1}) {
               SmartDialog.showToast(err.toString());
             }
           } else {
-            print("No match found.");
+            debugPrint("No match found.");
           }
         },
         child: Container(

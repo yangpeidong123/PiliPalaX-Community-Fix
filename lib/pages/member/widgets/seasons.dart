@@ -28,6 +28,8 @@ class MemberSeasonsAndSeriesPanel extends StatelessWidget {
                 list: seriesList![index - seasonListSize]);
           }
         },
+        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
         childCount: seasonListSize + seriesListSize,
       ),
       gridDelegate: SliverGridDelegateWithExtentAndRatio(

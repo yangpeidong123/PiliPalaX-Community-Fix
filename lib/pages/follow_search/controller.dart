@@ -70,4 +70,10 @@ class FollowSearchController extends GetxController {
   void onLoad() {
     searchFollow(type: 'onLoad');
   }
+
+  @override
+  void onClose() {
+    controller.dispose();
+    super.onClose();
+  }
 }

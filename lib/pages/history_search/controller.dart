@@ -87,4 +87,11 @@ class HistorySearchController extends GetxController {
     }
     loadingStatus.value = 'finish';
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    controller.value.dispose();
+    super.onClose();
+  }
 }

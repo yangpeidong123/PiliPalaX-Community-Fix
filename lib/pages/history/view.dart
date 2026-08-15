@@ -214,7 +214,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                   onUpdateMultiple: () => onUpdateMultiple(),
                                 );
                               },
-                                  childCount:
+                                  addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                                       _historyController.historyList.length),
                             )
                           : _historyController.isLoadingMore.value
@@ -240,7 +242,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         mainAxisExtent: 0),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return const VideoCardHSkeleton();
-                    }, childCount: 10),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                   );
                 }
               },

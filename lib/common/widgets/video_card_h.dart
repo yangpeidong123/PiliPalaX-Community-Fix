@@ -44,7 +44,7 @@ class VideoCardH extends StatelessWidget {
     String type = 'video';
     try {
       type = videoItem.type;
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     List<VideoCustomAction> actions =
         VideoCustomActions(videoItem, context).actions;
     final String heroTag = Utils.makeHeroTag(aid);

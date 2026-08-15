@@ -17,7 +17,7 @@ class OverlayPop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double imgWidth = min(Get.height, Get.width) - 8 * 2;
-    print('videoItem.title: ${videoItem.title}');
+    debugPrint('videoItem.title: ${videoItem.title}');
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       width: imgWidth,

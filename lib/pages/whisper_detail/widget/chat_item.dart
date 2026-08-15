@@ -82,7 +82,7 @@ class ChatItem extends StatelessWidget {
           RegExp(r"\[[^\[\]]+\]"),
           onMatch: (Match match) {
             final String emojiKey = match[0]!;
-            print(emojiKey);
+            debugPrint(emojiKey);
             if (emojiMap.containsKey(emojiKey)) {
               children.add(WidgetSpan(
                 child: NetworkImgLayer(

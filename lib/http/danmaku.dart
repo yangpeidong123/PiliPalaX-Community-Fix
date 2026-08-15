@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../models/danmaku/dm.pb.dart';
 import 'index.dart';
@@ -28,12 +29,12 @@ class DanmakaHttp {
             ? DmSegMobileReply.fromBuffer(response.data)
             : DmSegMobileReply();
       }
-      print('第${retryCount + 1}次重试失败, 状态码:${response.statusCode}');
+      debugPrint('第${retryCount + 1}次重试失败, 状态码:${response.statusCode}');
       retryCount++;
       await Future.delayed(const Duration(seconds: 1)); // 重试间隔时间
     }
 
-    print('所有重试失败，返回默认值');
+    debugPrint('所有重试失败，返回默认值');
     return DmSegMobileReply();
   }
 

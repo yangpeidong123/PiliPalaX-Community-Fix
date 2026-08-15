@@ -81,4 +81,10 @@ class FollowController extends GetxController with GetTickerProviderStateMixin {
       return res;
     }
   }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 }

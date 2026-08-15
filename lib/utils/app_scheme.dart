@@ -34,7 +34,7 @@ class PiliScheme {
     final String path = value.path;
 
     if (scheme == 'bilibili') {
-      print(value);
+      debugPrint(value);
       if (host == 'root') {
         Navigator.popUntil(
             Get.context!, (Route<dynamic> route) => route.isFirst);
@@ -127,7 +127,7 @@ class PiliScheme {
       } else if (host == 'comment' && path.startsWith("/detail/")) {
         //bilibili://comment/detail/17/832703053858603029/238686570016/?subType=0&anchor=238686628816&showEnter=1&extraIntentId=0&scene=1&enterName=%E6%9F%A5%E7%9C%8B%E5%8A%A8%E6%80%81%E8%AF%A6%E6%83%85&enterUri=bilibili://following/detail/832703053858603029
         //fmt.Sprintf("bilibili://comment/detail/%d/%d/%d/?subType=%d&anchor=%d&showEnter=1&extraIntentId=%d", rp.Type, rp.Oid, rootID, subType, rp.RpID, extraIntentID)
-        print(value.queryParameters);
+        debugPrint(value.queryParameters);
         List<String> pathParts = path.split('/');
         int type = int.parse(pathParts[2]);
         int oid = int.parse(pathParts[3]);
@@ -211,7 +211,7 @@ class PiliScheme {
           getToOpusWeb();
         }
       } else {
-        print(value);
+        debugPrint(value);
         SmartDialog.showToast('未知路径:$value，请截图反馈给开发者');
         // Get.toNamed(
         //   '/webview',
@@ -255,7 +255,7 @@ class PiliScheme {
 
   // 番剧跳转
   static Future<void> bangumiPush(int? seasonId, int? epId) async {
-    print('seasonId: $seasonId, epId: $epId');
+    debugPrint('seasonId: $seasonId, epId: $epId');
     SmartDialog.showLoading<dynamic>(msg: '获取中...');
     try {
       var result = await SearchHttp.bangumiInfo(seasonId: seasonId, epId: epId);
@@ -292,7 +292,7 @@ class PiliScheme {
     Map<String, String>? query = value.queryParameters;
     RegExp regExp = RegExp(r'^((www\.)|(m\.))?bilibili\.com$');
     if (regExp.hasMatch(host)) {
-      print('bilibili.com');
+      debugPrint('bilibili.com');
     } else if (host.contains('live')) {
       int roomId = int.parse(path!.split('/').last);
       Get.toNamed(
@@ -344,21 +344,21 @@ class PiliScheme {
       final String area = pathPart[1] == 'mobile' ? pathPart[2] : pathPart[1];
       switch (area) {
         case 'bangumi':
-          print('番剧');
+          debugPrint('番剧');
           for (var pathSegment in pathPart) {
             if (pathSegment.startsWith('ss')) {
-              print(pathSegment);
+              debugPrint(pathSegment);
               bangumiPush(matchNum(pathSegment).first, null);
               break;
             } else if (pathSegment.startsWith('ep')) {
-              print(pathSegment);
+              debugPrint(pathSegment);
               bangumiPush(null, matchNum(pathSegment).first);
               break;
             }
           }
           break;
         case 'video':
-          print('投稿');
+          debugPrint('投稿');
           final Map<String, dynamic> map = IdUtils.matchAvorBv(input: path);
           if (map.containsKey('AV')) {
             videoPush(map['AV']! as int, null);
@@ -369,7 +369,7 @@ class PiliScheme {
           }
           break;
         case 'read':
-          print('专栏');
+          debugPrint('专栏');
           late String id;
           if (query != null && query['id'] != null) {
             id = 'cv${matchNum(query['id']!).first}';
@@ -384,13 +384,13 @@ class PiliScheme {
           });
           break;
         case 'space':
-          print('个人空间');
+          debugPrint('个人空间');
           Get.toNamed('/member?mid=${matchNum(path).first}',
               arguments: {'face': ''});
           break;
         case 'medialist':
-          print('播放列表');
-          print(path);
+          debugPrint('播放列表');
+          debugPrint(path);
           // https://api.bilibili.com/x/v2/medialist/resource/list?mobi_app=web&type=1&biz_id=37663924&oid=&otype=2&ps=20&direction=false&desc=false&sort_field=1&tid=0&with_current=false
           SmartDialog.showToast('即将播放列表：${pathPart[3]}，还没做完，先用网页版顶一下');
           Get.toNamed(

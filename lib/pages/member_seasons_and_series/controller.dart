@@ -33,7 +33,7 @@ class MemberSeasonsAndSeriesController extends GetxController {
       }
       if (res['data'].page?.total != null && res['data'].page!.total! > 0) {
         total = res['data'].page!.total!;
-        print("getMemberSeasonsAndSeries total: $total");
+        debugPrint("getMemberSeasonsAndSeries total: $total");
       }
       currentTotal = seasonsList.length + seriesList.length;
     }

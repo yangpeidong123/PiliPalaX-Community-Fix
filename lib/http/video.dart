@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -52,7 +53,7 @@ class VideoHttp {
     try {
       final file = await _getRcmdCacheFile();
       await file.writeAsString(json.encode(items));
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
   }
 
   /// 从本地缓存加载并解析
@@ -323,7 +324,7 @@ class VideoHttp {
 
   // 相关视频
   static Future relatedVideoList({required String bvid}) async {
-    print(
+    debugPrint(
         'RecommendFilter.disableRelatedVideos: ${RecommendFilter.disableRelatedVideos}');
     if (RecommendFilter.disableRelatedVideos) {
       return {'status': true, 'data': []};
@@ -356,7 +357,7 @@ class VideoHttp {
   // 获取投币状态
   static Future hasCoinVideo({required String bvid}) async {
     var res = await Request().get(Api.hasCoinVideo, data: {'bvid': bvid});
-    print('res: $res');
+    debugPrint('res: $res');
     if (res.data['code'] == 0) {
       return {'status': true, 'data': res.data['data']};
     } else {
@@ -378,7 +379,7 @@ class VideoHttp {
         // 'csrf': await Request.getCsrf(),
       },
     );
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {'status': true, 'data': res.data['data']};
     } else {
@@ -406,7 +407,7 @@ class VideoHttp {
             .get(LocalCacheKey.accessKey, defaultValue: {})['value'],
       },
     );
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {'status': true, 'data': res.data['data']};
     } else {
@@ -450,7 +451,7 @@ class VideoHttp {
         'access_key': accessKey,
       },
     );
-    print(res);
+    debugPrint(res);
     if (res.data is! String && res.data['code'] == 0) {
       return {'status': true};
     } else {
@@ -484,7 +485,7 @@ class VideoHttp {
       'access_key': accessKey,
       'appkey': Constants.appKey,
     });
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {'status': true};
     } else {
@@ -515,7 +516,7 @@ class VideoHttp {
       'access_key': accessKey,
       'appkey': Constants.appKey,
     });
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {'status': true};
     } else {
@@ -642,7 +643,7 @@ class VideoHttp {
             'user-agent': pcua,
           },
         ));
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {'status': true};
     } else {
@@ -885,14 +886,14 @@ class VideoHttp {
       'pn': pn,
       'ps': ps,
     });
-    print("getRegionVideoList: $res");
+    debugPrint("getRegionVideoList: $res");
     if (res.data['code'] == 0) {
       List<HotVideoItemModel> list = [];
       List<int> blackMidsList = onlineCache
           .get(OnlineCacheKey.blackMidsList, defaultValue: [-1])
           .map<int>((e) => e as int)
           .toList();
-      print(res.data['data']['archives']);
+      debugPrint(res.data['data']['archives']);
       for (var i in res.data['data']['archives']) {
         if (!blackMidsList.contains(i['owner']['mid'])) {
           list.add(HotVideoItemModel.fromJson(i));

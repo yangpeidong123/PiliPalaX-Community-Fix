@@ -50,4 +50,10 @@ class MemberSeriesController extends GetxController {
   Future onRefresh() async {
     await getSeriesDetail('onRefresh');
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

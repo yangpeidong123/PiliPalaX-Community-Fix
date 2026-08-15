@@ -137,4 +137,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               child: MinePage(),
             ));
   }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 }

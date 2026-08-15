@@ -104,7 +104,9 @@ class _HotPageState extends State<HotPage> with AutomaticKeepAliveClientMixin {
                             videoItem: _hotController.videoList[index],
                             showPubdate: true,
                           );
-                        }, childCount: _hotController.videoList.length),
+                        }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: _hotController.videoList.length),
                       ),
                     );
                   } else {
@@ -128,7 +130,9 @@ class _HotPageState extends State<HotPage> with AutomaticKeepAliveClientMixin {
                         childAspectRatio: StyleString.aspectRatio * 2.4),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return const VideoCardHSkeleton();
-                    }, childCount: 10),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                   );
                 }
               },

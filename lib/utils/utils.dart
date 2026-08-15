@@ -312,7 +312,7 @@ class Utils {
     // 1.0.22-alpha.13+174 is newer then 1.0.22-beta.12+174
     // 1.0.22-beta.13+174 is newer then 1.0.22-alpha.13+174
     // 1.0.23+174 is newer than 1.0.22-beta.13+174
-    print('localVersion: $localVersion, remoteVersion: $remoteVersion');
+    debugPrint('localVersion: $localVersion, remoteVersion: $remoteVersion');
     if (localVersion == remoteVersion) {
       return false;
     }

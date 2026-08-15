@@ -77,7 +77,9 @@ class _FavPageState extends State<FavPage> {
                               childAspectRatio: StyleString.aspectRatio * 2.4,
                               mainAxisExtent: 0),
                           delegate: SliverChildBuilderDelegate(
-                            childCount:
+                            addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                                 _favController.favFolderData.value.list!.length,
                             (BuildContext context, int index) {
                               return FavItem(
@@ -114,7 +116,9 @@ class _FavPageState extends State<FavPage> {
                     (BuildContext context, int index) {
                       return const VideoCardHSkeleton();
                     },
-                    childCount: 10,
+                    addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10,
                   ),
                 ),
               ],

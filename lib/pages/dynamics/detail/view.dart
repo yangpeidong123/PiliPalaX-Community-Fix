@@ -97,7 +97,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage>
         } else {
           oid = moduleDynamic.major!.draw!.id!;
         }
-      } catch (_) {}
+      } catch (e) { debugPrint('catch error: $e'); }
     }
     if (!isOpusId) {
       _dynamicDetailController =
@@ -398,7 +398,9 @@ class _DynamicDetailPageState extends State<DynamicDetailPage>
                   ? SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         return const VideoReplySkeleton();
-                      }, childCount: 8),
+                      }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 8),
                     )
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -440,7 +442,9 @@ class _DynamicDetailPageState extends State<DynamicDetailPage>
                             );
                           }
                         },
-                        childCount:
+                        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                             _dynamicDetailController.replyList.length + 1,
                       ),
                     ),
@@ -457,7 +461,9 @@ class _DynamicDetailPageState extends State<DynamicDetailPage>
           return SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
               return const VideoReplySkeleton();
-            }, childCount: 8),
+            }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 8),
           );
         }
       },

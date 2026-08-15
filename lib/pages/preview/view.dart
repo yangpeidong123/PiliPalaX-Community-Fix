@@ -114,7 +114,7 @@ class _ImagePreviewState extends State<ImagePreview>
     // animationController.dispose();
     try {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     _doubleClickAnimationController.dispose();
     clearGestureDetailsCache();
     super.dispose();

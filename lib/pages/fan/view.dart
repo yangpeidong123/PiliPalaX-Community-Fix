@@ -91,7 +91,9 @@ class _FansPageState extends State<FansPage> {
                                   (BuildContext context, int index) {
                                     return fanItem(item: list[index]);
                                   },
-                                  childCount: list.length,
+                                  addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list.length,
                                 ))
                             : const NoData();
                       });

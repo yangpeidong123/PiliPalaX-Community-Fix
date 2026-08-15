@@ -218,7 +218,9 @@ class _SubDetailPageState extends State<SubDetailPage> {
                                 return SubVideoCardH(
                                   videoItem: subList[index],
                                 );
-                              }, childCount: subList.length),
+                              }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: subList.length),
                             ),
                     );
                   }
@@ -233,7 +235,9 @@ class _SubDetailPageState extends State<SubDetailPage> {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return const VideoCardHSkeleton();
-                  }, childCount: 10),
+                  }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                 );
               }
             },

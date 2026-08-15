@@ -150,6 +150,8 @@ class _RcmdPageState extends State<RcmdPage>
                 )
               : const VideoCardVSkeleton();
         },
+        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
         childCount: videoList!.isNotEmpty ? videoList!.length : 10,
       ),
     );

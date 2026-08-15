@@ -965,7 +965,7 @@ InlineSpan buildContent(
                         pictureItem['img_height'] /
                         pictureItem['img_width']))
                     .truncateToDouble();
-              } catch (_) {}
+              } catch (e) { debugPrint('catch error: $e'); }
 
               return GestureDetector(
                 onTap: () {

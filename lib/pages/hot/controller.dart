@@ -51,4 +51,10 @@ class HotController extends GetxController {
   void animateToTop() {
     scrollController.animToTop();
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

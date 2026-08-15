@@ -82,4 +82,10 @@ class SearchPanelController extends GetxController {
       }
     }
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

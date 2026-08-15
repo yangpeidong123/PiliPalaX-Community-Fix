@@ -241,7 +241,7 @@ class BangumiIntroController extends GetxController {
           delMediaIdsNew.add(i.id);
         }
       }
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     var result = await VideoHttp.favVideo(
         aid: IdUtils.bv2av(bvid),
         addIds: addMediaIdsNew.join(','),
@@ -327,7 +327,7 @@ class BangumiIntroController extends GetxController {
           Get.find<VideoReplyController>(tag: heroTag);
       videoReplyCtr.aid = aid;
       videoReplyCtr.queryReplyList(type: 'init');
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
   }
 
   // 追番

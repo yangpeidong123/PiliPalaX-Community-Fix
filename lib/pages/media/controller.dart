@@ -65,4 +65,10 @@ class MediaController extends GetxController {
     favFolderData.value = res['data'];
     return res;
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

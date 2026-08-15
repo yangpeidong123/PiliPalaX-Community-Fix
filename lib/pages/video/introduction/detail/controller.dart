@@ -84,7 +84,7 @@ class VideoIntroController extends GetxController {
     try {
       heroTag = Get.arguments['heroTag'];
       bvid = Get.parameters['bvid']!;
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     if (Get.arguments.isNotEmpty) {
       if (Get.arguments.containsKey('videoItem')) {
         preRender = true;
@@ -147,8 +147,8 @@ class VideoIntroController extends GetxController {
     VideoDetailController? videoDetailCtr;
     try {
       videoDetailCtr = Get.find<VideoDetailController>(tag: heroTag);
-    } catch (_) {}
-    print("videoDetailCtr: $videoDetailCtr");
+    } catch (e) { debugPrint('catch error: $e'); }
+    debugPrint("videoDetailCtr: $videoDetailCtr");
     if (videoDetailCtr == null) {
       Get.toNamed('/video?bvid=$bvid&cid=${lastPlayCid.value}&resume=true',
           arguments: {'heroTag': heroTag});
@@ -157,9 +157,9 @@ class VideoIntroController extends GetxController {
     videoDetailCtr.resumePlay = true;
     popRouteStackContinuously = '/video?bvid=$bvid&cid=${lastPlayCid.value}';
     Get.until((Route<dynamic> route) {
-      print(route.settings.name);
-      print(route.settings.arguments);
-      print(route.settings.arguments.runtimeType);
+      debugPrint(route.settings.name);
+      debugPrint(route.settings.arguments);
+      debugPrint(route.settings.arguments.runtimeType);
       if (route.settings.arguments is Map) {
         String? heroTagCurr =
             (route.settings.arguments as Map<String, dynamic>)['heroTag'];
@@ -218,7 +218,7 @@ class VideoIntroController extends GetxController {
   Future queryUserStat() async {
     var result = await UserHttp.userStat(mid: videoDetail.value.owner!.mid!);
     if (result['status']) {
-      print(result['data']);
+      debugPrint(result['data']);
       userStat.value = result['data'];
       userStat.refresh();
     }
@@ -332,7 +332,7 @@ class VideoIntroController extends GetxController {
     void coinVideo(int coin) async {
       var res = await VideoHttp.coinVideo(bvid: bvid, multiply: coin);
       if (res['status']) {
-        print(res);
+        debugPrint(res);
         SmartDialog.showToast('投币成功');
         hasCoin.value = true;
         videoDetail.value.stat!.coin = videoDetail.value.stat!.coin! + coin;
@@ -403,7 +403,7 @@ class VideoIntroController extends GetxController {
       }
     } catch (e) {
       // ignore: avoid_print
-      print(e);
+      debugPrint(e);
     }
     SmartDialog.showLoading(msg: '请求中');
     var result = await VideoHttp.favVideo(
@@ -532,14 +532,14 @@ class VideoIntroController extends GetxController {
           Get.find<RelatedController>(tag: heroTag);
       relatedCtr.bvid = bvid;
       relatedCtr.queryRelatedVideo();
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     // 重新请求评论
     try {
       final VideoReplyController videoReplyCtr =
           Get.find<VideoReplyController>(tag: heroTag);
       videoReplyCtr.aid = aid;
       videoReplyCtr.queryReplyList(type: 'init');
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     this.bvid = bvid;
     lastPlayCid.value = cid;
     queryVideoIntro();
@@ -640,7 +640,7 @@ class VideoIntroController extends GetxController {
 
   /// 列表循环或者顺序播放时，自动播放下一个
   bool nextPlay() {
-    print("entering nextPlay");
+    debugPrint("entering nextPlay");
     final List episodes = [];
     bool isPages = false;
     if (videoDetail.value.pages != null &&

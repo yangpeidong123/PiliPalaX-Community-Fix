@@ -17,4 +17,10 @@ class EmotePanelController extends GetxController
     }
     return res;
   }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 }

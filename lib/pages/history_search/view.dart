@@ -103,7 +103,9 @@ class _HistorySearchPageState extends State<HistorySearchPage> {
                             onUpdateMultiple: () => null,
                           );
                         },
-                        childCount: _historySearchCtr.historyList.length,
+                        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: _historySearchCtr.historyList.length,
                       )))
                 ],
               ),

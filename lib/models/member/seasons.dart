@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class MemberSeasonsAndSeriesDataModel {
   MemberSeasonsAndSeriesDataModel({
     this.page,
@@ -34,8 +36,8 @@ class MemberSeasonsAndSeriesPage {
   int? pageSize;
   int? total;
   MemberSeasonsAndSeriesPage.fromJson(Map<String, dynamic> json) {
-    print("bbbb");
-    print(json);
+    debugPrint("bbbb");
+    debugPrint(json);
     pageNum = json['page_num'];
     pageSize = json['page_size'];
     total = json['total'];

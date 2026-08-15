@@ -66,7 +66,9 @@ class _SubPageState extends State<SubPage> {
                               childAspectRatio: StyleString.aspectRatio * 2.4,
                               mainAxisExtent: 0),
                           delegate: SliverChildBuilderDelegate(
-                            childCount:
+                            addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                                 _subController.subFolderData.value.list!.length,
                             (BuildContext context, int index) {
                               return SubItem(

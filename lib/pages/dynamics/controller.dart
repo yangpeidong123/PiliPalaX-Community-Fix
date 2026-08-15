@@ -131,13 +131,13 @@ class DynamicsController extends GetxController
 
         break;
       case 'DYNAMIC_TYPE_PGC':
-        print('番剧');
+        debugPrint('番剧');
         SmartDialog.showToast('暂未支持的类型，请联系开发者');
         break;
 
       /// 纯文字动态查看
       case 'DYNAMIC_TYPE_WORD':
-        print('纯文本');
+        debugPrint('纯文本');
         Get.toNamed('/dynamicDetail',
             arguments: {'item': item, 'floor': floor});
         break;
@@ -173,7 +173,7 @@ class DynamicsController extends GetxController
 
       /// 番剧查看
       case 'DYNAMIC_TYPE_PGC_UNION':
-        print('DYNAMIC_TYPE_PGC_UNION 番剧');
+        debugPrint('DYNAMIC_TYPE_PGC_UNION 番剧');
         DynamicArchiveModel pgc = item.modules.moduleDynamic.major.pgc;
         if (pgc.epid != null) {
           SmartDialog.showLoading(msg: '获取中...');
@@ -304,8 +304,8 @@ class DynamicsController extends GetxController
   }
 
   onRefresh() async {
-    print('onRefresh');
-    print(tabsConfig[tabController.index]['ctr']);
+    debugPrint('onRefresh');
+    debugPrint(tabsConfig[tabController.index]['ctr']);
     await Future.wait(<Future>[
       queryFollowUp(),
       tabsConfig[tabController.index]['ctr'].onRefresh()
@@ -316,5 +316,12 @@ class DynamicsController extends GetxController
   void animateToTop() async {
     tabsConfig[tabController.index]['ctr'].animateToTop();
     scrollController.animToTop();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    tabController.dispose();
+    super.onClose();
   }
 }

@@ -57,7 +57,7 @@ Widget picWidget(item, context) {
         try {
           origAspectRatio =
               aspectRatio = pictures.first.width / pictures.first.height;
-        } catch (_) {}
+        } catch (e) { debugPrint('catch error: $e'); }
         if (aspectRatio < 0.4) {
           aspectRatio = 0.4;
         }

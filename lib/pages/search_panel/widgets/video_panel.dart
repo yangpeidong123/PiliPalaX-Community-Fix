@@ -45,7 +45,7 @@ class SearchVideoPanel extends StatelessWidget {
                             type: i['type'],
                             selectedType: controller.selectedType.value,
                             callFn: (bool selected) async {
-                              print('selected: $selected');
+                              debugPrint('selected: $selected');
                               controller.selectedType.value = i['type'];
                               ctr.order.value =
                                   i['type'].toString().split('.').last;
@@ -100,7 +100,9 @@ class SearchVideoPanel extends StatelessWidget {
                       return VideoCardH(
                           videoItem: list[index], showPubdate: true);
                     },
-                    childCount: list.length,
+                    addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list.length,
                   ),
                 )),
           ],

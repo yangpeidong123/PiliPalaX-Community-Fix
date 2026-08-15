@@ -178,11 +178,11 @@ class _MemberPageState extends State<MemberPage>
       child: FutureBuilder(
         future: _futureBuilderFuture,
         builder: (context, snapshot) {
-          print("snapshot:${snapshot.connectionState} ${snapshot.hasData}");
+          debugPrint("snapshot:${snapshot.connectionState} ${snapshot.hasData}");
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             Map data = snapshot.data!;
-            print(data);
+            debugPrint(data);
             if (data['status']) {
               return Obx(
                 () => Stack(
@@ -202,7 +202,7 @@ class _MemberPageState extends State<MemberPage>
   }
 
   Widget profilePanelAndDetailInfo(bool isHorizontal, bool loadingStatus) {
-    print("loadingStatus:$loadingStatus");
+    debugPrint("loadingStatus:$loadingStatus");
     if (isHorizontal) {
       return Row(
         children: [

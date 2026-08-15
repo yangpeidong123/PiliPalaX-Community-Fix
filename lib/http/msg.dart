@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:dio/dio.dart';
 
@@ -195,7 +196,7 @@ class MsgHttp {
               .toList(),
         };
       } catch (err) {
-        print('err🔟: $err');
+        debugPrint('err🔟: $err');
       }
     } else {
       return {
@@ -225,7 +226,7 @@ class MsgHttp {
           'data': SessionMsgDataModel.fromJson(res.data['data']),
         };
       } catch (err) {
-        print(err);
+        debugPrint(err);
       }
     } else {
       return {

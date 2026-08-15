@@ -56,7 +56,7 @@ class WebviewController extends GetxController {
           },
           onPageFinished: (String url) {
             if (type.value == 'liveRoom') {
-              print("adding");
+              debugPrint("adding");
               //注入js
               controller.runJavaScriptReturningResult('''
                 document.styleSheets[0].insertRule('div.open-app-btn.bili-btn-warp {display:none;}', 0);

@@ -66,7 +66,7 @@ class HtmlHttp {
         'commentId': int.parse(commentId)
       };
     } catch (err) {
-      print('err: $err');
+      debugPrint('err: $err');
     }
   }
 
@@ -93,9 +93,9 @@ class HtmlHttp {
         .group(1)!
         .replaceAll(r'\u002F', '/')
         .split('@')[0];
-    print("avatar: $avatar");
+    debugPrint("avatar: $avatar");
     String uname = authorHeader.querySelector('.up-name')!.text.trim();
-    print("uname: $uname");
+    debugPrint("uname: $uname");
     // 动态详情
     Element opusDetail = appDom.querySelector('.article-content')!;
     // 发布时间
@@ -106,12 +106,12 @@ class HtmlHttp {
     //
     String opusContent =
         opusDetail.querySelector('#read-article-holder')?.innerHtml ?? '';
-    print("opusContent: $opusContent");
+    debugPrint("opusContent: $opusContent");
     if (opusContent.isEmpty) {
       // 查找形如"dyn_id_str":"(\d+)"的id
       String opusid =
           RegExp(r'"dyn_id_str":"(\d+)"').firstMatch(response.data)!.group(1)!;
-      print("opusid: $opusid");
+      debugPrint("opusid: $opusid");
       return await reqHtml(opusid, 'opus');
     }
     RegExp digitRegExp = RegExp(r'\d+');

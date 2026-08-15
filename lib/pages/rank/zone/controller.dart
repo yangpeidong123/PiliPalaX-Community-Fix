@@ -14,7 +14,7 @@ class ZoneController extends GetxController {
 
   // 获取推荐
   Future queryRankFeed(String type, int? rid, int? tid) async {
-    print('queryRankFeed: $type, $rid, $tid');
+    debugPrint('queryRankFeed: $type, $rid, $tid');
     this.rid = rid;
     this.tid = tid;
     late dynamic res;
@@ -51,5 +51,11 @@ class ZoneController extends GetxController {
   // 返回顶部并刷新
   void animateToTop() {
     scrollController.animToTop();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

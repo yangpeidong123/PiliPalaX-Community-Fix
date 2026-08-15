@@ -241,6 +241,8 @@ class _BangumiPageState extends State<BangumiPage>
               ? BangumiCardV(bangumiItem: bangumiList[index])
               : nil;
         },
+        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
         childCount: bangumiList!.isNotEmpty ? bangumiList!.length : 10,
       ),
     );

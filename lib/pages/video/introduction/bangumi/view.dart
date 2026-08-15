@@ -141,7 +141,7 @@ class _BangumiInfoState extends State<BangumiInfo> {
     videoDetailCtr = Get.find<VideoDetailController>(tag: heroTag);
     bangumiItem = bangumiIntroController.bangumiItem;
     cid = widget.cid!;
-    print('cid:  $cid');
+    debugPrint('cid:  $cid');
     videoDetailCtr.cid.listen((p0) {
       cid = p0;
       if (!mounted) return;

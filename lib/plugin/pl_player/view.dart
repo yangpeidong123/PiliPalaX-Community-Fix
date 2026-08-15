@@ -174,14 +174,14 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         PlPlayerController.getPlayerStatusIfExists() == PlayerStatus.playing &&
         !onlyPlayAudioUponEnteringBackgroundMode &&
         !widget.controller.onlyPlayAudio.value) {
-      print('onlyPlayAudioUponEnteringBackgroundMode On');
+      debugPrint('onlyPlayAudioUponEnteringBackgroundMode On');
       onlyPlayAudioUponEnteringBackgroundMode = true;
       widget.controller.setOnlyPlayAudio(true);
     } else if (PlPlayerController.getPlayerStatusIfExists() ==
             PlayerStatus.playing &&
         onlyPlayAudioUponEnteringBackgroundMode &&
         widget.controller.onlyPlayAudio.value) {
-      print('onlyPlayAudioUponEnteringBackgroundMode Off');
+      debugPrint('onlyPlayAudioUponEnteringBackgroundMode Off');
       onlyPlayAudioUponEnteringBackgroundMode = false;
       widget.controller.setOnlyPlayAudio(false);
     }
@@ -240,7 +240,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             _volumeValue.value = value;
           }
         });
-      } catch (_) {}
+      } catch (e) { debugPrint('catch error: $e'); }
     });
 
     Future.microtask(() async {
@@ -261,7 +261,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             }
           });
         }
-      } catch (_) {}
+      } catch (e) { debugPrint('catch error: $e'); }
     });
   }
 
@@ -269,7 +269,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     try {
       FlutterVolumeController.updateShowSystemUI(false);
       await FlutterVolumeController.setVolume(value);
-    } catch (_) {}
+    } catch (e) { debugPrint('catch error: $e'); }
     _volumeValue.value = value;
     _volumeIndicator.value = true;
     _volumeInterceptEventStream.value = true;
@@ -291,7 +291,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         await ScreenBrightness.instance.setApplicationScreenBrightness(value);
       }
     } catch (e) {
-      print(e);
+      debugPrint(e);
     }
     _brightnessIndicator.value = true;
     _brightnessTimer?.cancel();
@@ -725,12 +725,12 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                 // 左边区域 👈
                 final double level =
                     min(renderBox.size.height, renderBox.size.width) * 2.0;
-                print("level:$level");
+                debugPrint("level:$level");
                 final double brightness =
                     _brightnessValue.value - delta.dy / level;
-                print("brightness:$brightness");
+                debugPrint("brightness:$brightness");
                 final double result = brightness.clamp(0.0, 1.0);
-                print("result:$result");
+                debugPrint("result:$result");
                 setBrightness(result);
               } else if (_gestureType == 'middle') {
                 // 全屏/应用内小窗
@@ -776,8 +776,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       case PlayerGestureAction.pipOutside:
                         // lib/pages/video/widgets/header_control.dart
 
-                        print(_.dataSource.videoSource);
-                        print(_.dataSource.audioSource);
+                        debugPrint(_.dataSource.videoSource);
+                        debugPrint(_.dataSource.audioSource);
                         _.controls = false;
                         FlPiP().enable(
                           ios: FlPiPiOSConfig(

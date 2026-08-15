@@ -1,5 +1,6 @@
 // final _loggerFactory =
 
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 import 'package:logger/logger.dart';
@@ -45,7 +46,7 @@ Future<bool> clearLogs() async {
   try {
     await file.writeAsString('');
   } catch (e) {
-    print('Error clearing file: $e');
+    debugPrint('Error clearing file: $e');
     return false;
   }
   return true;

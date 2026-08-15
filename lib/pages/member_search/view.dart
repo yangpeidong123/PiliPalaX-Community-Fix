@@ -126,7 +126,9 @@ class _MemberSearchPageState extends State<MemberSearchPage>
                                             videoItem: _memberSearchCtr
                                                 .archiveList[index]);
                                       },
-                                          childCount: _memberSearchCtr.archiveList
+                                          addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: _memberSearchCtr.archiveList
                                               .length))
                                   : _memberSearchCtr.loadingStatus.value ==
                                           'loading'
@@ -146,7 +148,9 @@ class _MemberSearchPageState extends State<MemberSearchPage>
                                           delegate: SliverChildBuilderDelegate(
                                               (context, index) {
                                             return const VideoCardHSkeleton();
-                                          }, childCount: 10))
+                                          }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10))
                                       : const NoData(),
                             ));
                       } else {
@@ -171,7 +175,9 @@ class _MemberSearchPageState extends State<MemberSearchPage>
                               delegate:
                                   SliverChildBuilderDelegate((context, index) {
                                 return const VideoCardHSkeleton();
-                              }, childCount: 10)));
+                              }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10)));
                     }
                   },
                 ),

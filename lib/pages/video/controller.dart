@@ -291,7 +291,7 @@ class VideoDetailController extends GetxController
       videoDetailCtr: this,
       heroTag: heroTag,
     );
-    print("resumePlay:${resumePlay},isFirstTime:${isFirstTime}");
+    debugPrint("resumePlay:${resumePlay},isFirstTime:${isFirstTime}");
     if (!resumePlay) {
       await plPlayerController!.setDataSource(
         DataSource(
@@ -499,5 +499,11 @@ class VideoDetailController extends GetxController
     replyReplyBottomSheetCtr != null
         ? replyReplyBottomSheetCtr!.close()
         : print('replyReplyBottomSheetCtr is null');
+  }
+
+  @override
+  void onClose() {
+    tabCtr.dispose();
+    super.onClose();
   }
 }

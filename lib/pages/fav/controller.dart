@@ -52,4 +52,10 @@ class FavController extends GetxController {
   Future onLoad() async {
     queryFavFolder(type: 'onload');
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

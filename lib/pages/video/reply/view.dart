@@ -220,7 +220,9 @@ class _VideoReplyPanelState extends State<VideoReplyPanel>
                         delegate: SliverChildBuilderDelegate(
                             (BuildContext context, index) {
                           return const VideoReplySkeleton();
-                        }, childCount: 5),
+                        }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 5),
                       )
                     : SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -259,7 +261,9 @@ class _VideoReplyPanelState extends State<VideoReplyPanel>
                               );
                             }
                           },
-                          childCount:
+                          addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                               _videoReplyController.replyList.length + 1,
                         ),
                       ),

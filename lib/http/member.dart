@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -54,7 +55,7 @@ class MemberHttp {
         },
       ),
     );
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {
         'status': true,
@@ -430,7 +431,7 @@ class MemberHttp {
         if (currentMid != null) 'current_mid': currentMid,
       },
     );
-    print(res);
+    debugPrint(res);
     if (res.data['code'] == 0) {
       return {
         'status': true,

@@ -115,7 +115,9 @@ class _MemberArchivePageState extends State<MemberArchivePage> {
                             showPubdate: true,
                           );
                         },
-                        childCount: list.length,
+                        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list.length,
                       ),
                     );
                   });

@@ -230,7 +230,7 @@ class _LiveRoomPageState extends State<LiveRoomPage> {
       return childWhenDisabled;
     }
     return PiPBuilder(builder: (PiPStatusInfo? statusInfo) {
-      print("PiPStatusInfo${statusInfo?.status}");
+      debugPrint("PiPStatusInfo${statusInfo?.status}");
       switch (statusInfo?.status) {
         case PiPStatus.enabled:
           return videoPlayerPanel;

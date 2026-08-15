@@ -93,7 +93,9 @@ class _MemberDynamicsPageState extends State<MemberDynamicsPage> {
                                       (context, index) {
                                         return DynamicPanel(item: list[index]);
                                       },
-                                      childCount: list.length,
+                                      addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list.length,
                                     ),
                                   )),
                               const SliverFillRemaining(),

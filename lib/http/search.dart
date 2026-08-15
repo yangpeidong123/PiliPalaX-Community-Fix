@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hive/hive.dart';
@@ -121,7 +122,7 @@ class SearchHttp {
           'data': data,
         };
       } catch (err) {
-        print(err);
+        debugPrint(err);
       }
     } else {
       return {

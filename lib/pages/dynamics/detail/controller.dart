@@ -119,4 +119,10 @@ class DynamicDetailController extends GetxController {
     var res = await HtmlHttp.reqHtml(id, 'opus');
     oid = res['commentId'];
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

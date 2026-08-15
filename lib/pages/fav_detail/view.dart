@@ -219,7 +219,9 @@ class _FavDetailPageState extends State<FavDetailPage> {
                         mainAxisExtent: 0),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return const VideoCardHSkeleton();
-                    }, childCount: 10),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                   );
                 }
                 Map data = snapshot.data;
@@ -250,7 +252,9 @@ class _FavDetailPageState extends State<FavDetailPage> {
                         callFn: () =>
                             _favDetailController.onCancelFav(favList[index].id),
                       );
-                    }, childCount: favList.length),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: favList.length),
                   );
                 });
               },

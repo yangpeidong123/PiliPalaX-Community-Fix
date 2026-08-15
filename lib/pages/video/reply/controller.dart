@@ -129,4 +129,10 @@ class VideoReplyController extends GetxController {
       queryReplyList(type: 'init');
     });
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

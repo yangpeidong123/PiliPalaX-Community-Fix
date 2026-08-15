@@ -1092,7 +1092,7 @@ class _HeaderControlState extends State<HeaderControl> {
                         //   final DanmakuOption updatedOption =
                         //   currentOption.copyWith(strokeWidth: val);
                         //   danmakuController.updateOption(updatedOption);
-                        // } catch (_) {}
+                        // } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1143,7 +1143,7 @@ class _HeaderControlState extends State<HeaderControl> {
                                   // 添加或修改其他需要修改的选项属性
                                 );
                                 danmakuController.updateOption(updatedOption);
-                              } catch (_) {}
+                              } catch (e) { debugPrint('catch error: $e'); }
                             },
                             text: i['label'],
                             selectStatus: blockTypes.contains(i['value']),
@@ -1169,7 +1169,7 @@ class _HeaderControlState extends State<HeaderControl> {
                           final DanmakuOption updatedOption =
                               currentOption.copyWith(massiveMode: massiveMode);
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                       icon: Icons.format_align_justify,
                       text: "允许重叠",
@@ -1200,7 +1200,7 @@ class _HeaderControlState extends State<HeaderControl> {
                           final DanmakuOption updatedOption =
                               currentOption.copyWith(area: val);
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1229,7 +1229,7 @@ class _HeaderControlState extends State<HeaderControl> {
                           final DanmakuOption updatedOption =
                               currentOption.copyWith(opacity: val);
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1258,7 +1258,7 @@ class _HeaderControlState extends State<HeaderControl> {
                           final DanmakuOption updatedOption =
                               currentOption.copyWith(fontWeight: fontWeight);
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1287,7 +1287,7 @@ class _HeaderControlState extends State<HeaderControl> {
                           final DanmakuOption updatedOption =
                               currentOption.copyWith(strokeWidth: val);
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1318,7 +1318,7 @@ class _HeaderControlState extends State<HeaderControl> {
                             fontSize: (15 * fontSizeVal).toDouble(),
                           );
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1349,7 +1349,7 @@ class _HeaderControlState extends State<HeaderControl> {
                                           widget.controller!.playbackSpeed)
                                       .round());
                           danmakuController.updateOption(updatedOption);
-                        } catch (_) {}
+                        } catch (e) { debugPrint('catch error: $e'); }
                       },
                     ),
                   ),
@@ -1494,8 +1494,8 @@ class _HeaderControlState extends State<HeaderControl> {
             SmartDialog.showToast('播放器未初始化');
             return;
           }
-          print(widget.controller!.dataSource.videoSource);
-          print(widget.controller!.dataSource.audioSource);
+          debugPrint(widget.controller!.dataSource.videoSource);
+          debugPrint(widget.controller!.dataSource.audioSource);
           widget.controller!.controls = false;
           FlPiP().enable(
             ios: FlPiPiOSConfig(

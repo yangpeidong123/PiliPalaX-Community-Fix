@@ -111,7 +111,9 @@ class _ZonePageState extends State<ZonePage>
                             videoItem: _zoneController.videoList[index],
                             showPubdate: true,
                           );
-                        }, childCount: _zoneController.videoList.length),
+                        }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: _zoneController.videoList.length),
                       ),
                     );
                   } else {
@@ -136,7 +138,9 @@ class _ZonePageState extends State<ZonePage>
                         mainAxisExtent: 0),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return const VideoCardHSkeleton();
-                    }, childCount: 10),
+                    }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                   );
                 }
               },

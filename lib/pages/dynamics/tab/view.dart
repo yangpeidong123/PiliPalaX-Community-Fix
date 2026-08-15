@@ -61,7 +61,7 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
         }
       });
     dynamicsController.mid.listen((mid) {
-      print('midListen: $mid');
+      debugPrint('midListen: $mid');
       scrollController.jumpTo(0);
       _futureBuilderFuture = _dynamicsTabController.queryFollowDynamic(
           'init', widget.dynamicsType, mid);
@@ -146,7 +146,9 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
                                         }
                                         return const SizedBox();
                                       },
-                                      childCount: list.length,
+                                      addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: list.length,
                                     ),
                                   )),
                               const SliverFillRemaining(),
@@ -211,7 +213,9 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
           sliver: SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
             return const DynamicCardSkeleton();
-          }, childCount: 10)),
+          }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10)),
         ),
         const SliverFillRemaining()
       ]);
@@ -225,7 +229,9 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
           mainAxisExtent: 50),
       delegate: SliverChildBuilderDelegate((context, index) {
         return const DynamicCardSkeleton();
-      }, childCount: 10),
+      }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
     );
   }
 }

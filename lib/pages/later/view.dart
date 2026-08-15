@@ -106,7 +106,9 @@ class _LaterPageState extends State<LaterPage> {
                                           _laterController.toViewDel(context,
                                               aid: videoItem.aid));
                                 },
-                                    childCount:
+                                    addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount:
                                         _laterController.laterList.length),
                               )
                             : _laterController.isLoading.value
@@ -135,7 +137,9 @@ class _LaterPageState extends State<LaterPage> {
                           mainAxisExtent: 0),
                       delegate: SliverChildBuilderDelegate((context, index) {
                         return const VideoCardHSkeleton();
-                      }, childCount: 10),
+                      }, addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 10),
                     );
                   }
                 },

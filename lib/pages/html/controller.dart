@@ -125,4 +125,10 @@ class HtmlRenderController extends GetxController {
     replyList.clear();
     queryReplyList(reqType: 'init');
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

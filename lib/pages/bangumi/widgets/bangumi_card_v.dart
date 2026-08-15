@@ -66,8 +66,8 @@ class BangumiCardV extends StatelessWidget {
                 String bvid = episode.bvid!;
                 int cid = episode.cid!;
                 String pic = episode.cover!;
-                print('epId');
-                print(epId);
+                debugPrint('epId');
+                debugPrint(epId);
                 String heroTag = Utils.makeHeroTag(cid);
                 Get.toNamed(
                   '/video?bvid=$bvid&cid=$cid&seasonId=$seasonId&epId=$epId',

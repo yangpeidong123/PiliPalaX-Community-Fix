@@ -207,7 +207,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   // 播放器状态监听
   void playerListener(PlayerStatus? status) async {
-    print("playerListener $status");
+    debugPrint("playerListener $status");
     playerStatus = status!;
     switch (status) {
       case PlayerStatus.playing:
@@ -394,7 +394,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
     videoDetailController.autoPlay.value =
         !videoDetailController.isShowCover.value;
-    print("autoplay:${videoDetailController.autoPlay.value}");
+    debugPrint("autoplay:${videoDetailController.autoPlay.value}");
     if (videoDetailController.videoType == SearchType.video) {
       final videoIntroController =
           Get.find<VideoIntroController>(tag: Get.arguments['heroTag']);

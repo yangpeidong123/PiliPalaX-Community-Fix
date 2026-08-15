@@ -161,7 +161,9 @@ class _SearchPanelState extends State<SearchPanel>
                               return const VideoCardHSkeleton();
                           }
                         },
-                        childCount: 15,
+                        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
+        childCount: 15,
                       ))
                 ]);
           }

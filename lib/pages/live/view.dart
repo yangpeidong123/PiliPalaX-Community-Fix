@@ -173,6 +173,8 @@ class _LivePageState extends State<LivePage>
               ? LiveCardV(liveItem: liveList[index])
               : const VideoCardVSkeleton();
         },
+        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: true,
         childCount: liveList.isNotEmpty ? liveList.length : 10,
       ),
     );
