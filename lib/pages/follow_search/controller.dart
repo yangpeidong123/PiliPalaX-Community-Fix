@@ -73,7 +73,7 @@ class FollowSearchController extends GetxController {
 
   @override
   void onClose() {
-    controller.dispose();
+    controller.value.dispose();
     super.onClose();
   }
 }

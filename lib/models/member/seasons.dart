@@ -37,7 +37,7 @@ class MemberSeasonsAndSeriesPage {
   int? total;
   MemberSeasonsAndSeriesPage.fromJson(Map<String, dynamic> json) {
     debugPrint("bbbb");
-    debugPrint(json);
+    debugPrint('$json');
     pageNum = json['page_num'];
     pageSize = json['page_size'];
     total = json['total'];

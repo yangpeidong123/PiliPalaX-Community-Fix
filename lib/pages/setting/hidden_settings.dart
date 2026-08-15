@@ -16,7 +16,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
   }
 
   void test(Object? val) {
-    debugPrint(val);
+    debugPrint('$val');
   }
 
   @override

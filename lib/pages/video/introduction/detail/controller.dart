@@ -157,9 +157,9 @@ class VideoIntroController extends GetxController {
     videoDetailCtr.resumePlay = true;
     popRouteStackContinuously = '/video?bvid=$bvid&cid=${lastPlayCid.value}';
     Get.until((Route<dynamic> route) {
-      debugPrint(route.settings.name);
-      debugPrint(route.settings.arguments);
-      debugPrint(route.settings.arguments.runtimeType);
+      debugPrint('$route.settings.name');
+      debugPrint('$route.settings.arguments');
+      debugPrint('$route.settings.arguments.runtimeType');
       if (route.settings.arguments is Map) {
         String? heroTagCurr =
             (route.settings.arguments as Map<String, dynamic>)['heroTag'];
@@ -218,7 +218,7 @@ class VideoIntroController extends GetxController {
   Future queryUserStat() async {
     var result = await UserHttp.userStat(mid: videoDetail.value.owner!.mid!);
     if (result['status']) {
-      debugPrint(result['data']);
+      debugPrint('$result['data']');
       userStat.value = result['data'];
       userStat.refresh();
     }
@@ -332,7 +332,7 @@ class VideoIntroController extends GetxController {
     void coinVideo(int coin) async {
       var res = await VideoHttp.coinVideo(bvid: bvid, multiply: coin);
       if (res['status']) {
-        debugPrint(res);
+        debugPrint('$res');
         SmartDialog.showToast('投币成功');
         hasCoin.value = true;
         videoDetail.value.stat!.coin = videoDetail.value.stat!.coin! + coin;
@@ -403,7 +403,7 @@ class VideoIntroController extends GetxController {
       }
     } catch (e) {
       // ignore: avoid_print
-      debugPrint(e);
+      debugPrint('$e');
     }
     SmartDialog.showLoading(msg: '请求中');
     var result = await VideoHttp.favVideo(

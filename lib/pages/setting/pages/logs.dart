@@ -56,7 +56,7 @@ class _LogsPageState extends State<LogsPage> {
                   l.split("Crash occurred on")[1].trim(),//.split('.')[0],
                 );
               } catch (e) {
-                debugPrint(e.toString());
+                debugPrint('$e.toString('));
                 date = l.toString();
               }
               return "";

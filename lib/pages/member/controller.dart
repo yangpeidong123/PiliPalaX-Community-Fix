@@ -56,7 +56,7 @@ class MemberController extends GetxController with GetTickerProviderStateMixin {
     // await getMemberView();
     // await getWwebid();
     var res = await MemberHttp.memberInfo(mid: mid);
-    debugPrint(res);
+    debugPrint('$res');
     if (res['status']) {
       memberInfo.value = res['data'];
       relationSearch();

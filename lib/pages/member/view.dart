@@ -182,7 +182,7 @@ class _MemberPageState extends State<MemberPage>
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             Map data = snapshot.data!;
-            debugPrint(data);
+            debugPrint('$data');
             if (data['status']) {
               return Obx(
                 () => Stack(

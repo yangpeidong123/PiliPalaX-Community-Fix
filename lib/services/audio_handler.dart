@@ -63,7 +63,7 @@ class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
     // print("此时调用栈为：");
     // print(newMediaItem);
     // print(newMediaItem.title);
-    // debugPrint(StackTrace.current.toString());
+    // debugPrint('$StackTrace.current.toString('));
     // print(Get.currentRoute);
     // if (!Get.currentRoute.startsWith('/video') && !Get.currentRoute.startsWith('/live')) {
     //   return;
@@ -108,7 +108,7 @@ class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
   onStatusChange(PlayerStatus status, bool isBuffering) {
     if (!enableBackgroundPlay) return;
     // print("此时调用栈为：");
-    // debugPrint(StackTrace.current.toString());
+    // debugPrint('$StackTrace.current.toString('));
     // print("isBuffering: $isBuffering");
     // if (_item.isEmpty) return;
     // isBuffering = false;

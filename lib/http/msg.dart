@@ -226,7 +226,7 @@ class MsgHttp {
           'data': SessionMsgDataModel.fromJson(res.data['data']),
         };
       } catch (err) {
-        debugPrint(err);
+        debugPrint('$err');
       }
     } else {
       return {

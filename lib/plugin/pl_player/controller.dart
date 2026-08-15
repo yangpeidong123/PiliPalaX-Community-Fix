@@ -575,7 +575,7 @@ class PlPlayerController {
       }
     } catch (err, stackTrace) {
       dataStatus.status.value = DataStatus.error;
-      debugPrint(stackTrace.toString());
+      debugPrint('$stackTrace.toString('));
       debugPrint('plPlayer err:  $err');
     }
   }
@@ -1158,7 +1158,7 @@ class PlPlayerController {
       FlutterVolumeController.updateShowSystemUI(false);
       await FlutterVolumeController.setVolume(volumeNew);
     } catch (err) {
-      debugPrint(err);
+      debugPrint('$err');
     }
   }
 
@@ -1372,8 +1372,8 @@ class PlPlayerController {
     }
 
     debugPrint("enterPip");
-    debugPrint(videoIntroController);
-    debugPrint(bangumiIntroController);
+    debugPrint('$videoIntroController');
+    debugPrint('$bangumiIntroController');
     bool isLive =
         videoIntroController == null && bangumiIntroController == null;
     double? videoHeight = videoPlayerController?.state.height?.toDouble();
@@ -1700,7 +1700,7 @@ class PlPlayerController {
       _instance = null;
       videoPlayerServiceHandler.clear();
     } catch (err) {
-      debugPrint(err);
+      debugPrint('$err');
     }
   }
 
@@ -1767,7 +1767,7 @@ class PlPlayerController {
       return;
     }
     Map<String, String> s = _vttSubtitles[index];
-    debugPrint(s['text']);
+    debugPrint('$s['text']');
     _videoPlayerController?.setSubtitleTrack(SubtitleTrack.data(
       s['text']!,
       title: s['title']!,

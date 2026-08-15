@@ -94,7 +94,7 @@ class FavSearchController extends GetxController {
   @override
   void onClose() {
     scrollController.dispose();
-    controller.dispose();
+    controller.value.dispose();
     super.onClose();
   }
 }

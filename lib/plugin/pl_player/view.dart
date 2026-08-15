@@ -291,7 +291,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         await ScreenBrightness.instance.setApplicationScreenBrightness(value);
       }
     } catch (e) {
-      debugPrint(e);
+      debugPrint('$e');
     }
     _brightnessIndicator.value = true;
     _brightnessTimer?.cancel();
@@ -776,8 +776,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       case PlayerGestureAction.pipOutside:
                         // lib/pages/video/widgets/header_control.dart
 
-                        debugPrint(_.dataSource.videoSource);
-                        debugPrint(_.dataSource.audioSource);
+                        debugPrint('$_.dataSource.videoSource');
+                        debugPrint('$_.dataSource.audioSource');
                         _.controls = false;
                         FlPiP().enable(
                           ios: FlPiPiOSConfig(

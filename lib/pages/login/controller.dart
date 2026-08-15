@@ -68,7 +68,7 @@ class LoginPageController extends GetxController
         codeInfo.value = res;
         codeInfo.refresh();
         debugPrint("codeInfo");
-        debugPrint(codeInfo);
+        debugPrint('$codeInfo');
         qrCodeTimer = Timer.periodic(const Duration(milliseconds: 1000), (t) {
           qrCodeLeftTime.value = 180 - t.tick;
           if (qrCodeLeftTime <= 0) {
@@ -83,7 +83,7 @@ class LoginPageController extends GetxController
             if (value['status']) {
               t.cancel();
               statusQRCode.value = '扫码成功';
-              debugPrint(value['data']);
+              debugPrint('$value['data']');
               await afterLoginByApp(
                   value['data'], value['data']['cookie_info']);
               Get.back();
@@ -120,7 +120,7 @@ class LoginPageController extends GetxController
       });
       List<dynamic> cookieInfo = cookie_info['cookies'];
       debugPrint("cookieInfo");
-      debugPrint(cookieInfo);
+      debugPrint('$cookieInfo');
       List<Cookie> cookies = [];
       String cookieStrings = cookieInfo.map((cookie) {
         String cstr =
@@ -137,11 +137,11 @@ class LoginPageController extends GetxController
         await Request.cookieManager.cookieJar
             .saveFromResponse(Uri.parse(url), cookies);
       }
-      debugPrint(cookieStrings);
+      debugPrint('$cookieStrings');
       debugPrint(Request.cookieManager.cookieJar
           .loadForRequest(Uri.parse(HttpString.apiBaseUrl)));
       Request.dio.options.headers['cookie'] = cookieStrings;
-      debugPrint(Request.dio.options);
+      debugPrint('$Request.dio.options');
     } catch (e) {
       SmartDialog.showToast('设置登录态失败，$e');
     }
@@ -271,14 +271,14 @@ class LoginPageController extends GetxController
     }
     // if ((passwordFormKey.currentState as FormState).validate()) {
     var webKeyRes = await LoginHttp.getWebKey();
-    debugPrint(webKeyRes);
+    debugPrint('$webKeyRes');
     if (!webKeyRes['status']) {
       SmartDialog.showToast(webKeyRes['msg']);
       return;
     }
     String salt = webKeyRes['data']['hash'];
     String key = webKeyRes['data']['key'];
-    debugPrint(key);
+    debugPrint('$key');
     var res = await LoginHttp.loginByPwd(
       username: username,
       password: password,
@@ -289,7 +289,7 @@ class LoginPageController extends GetxController
       gee_challenge: captchaData.geetest?.challenge,
       recaptcha_token: captchaData.token,
     );
-    debugPrint(res);
+    debugPrint('$res');
     if (res['status']) {
       var data = res['data'];
       for (var key in data.keys) {
@@ -365,9 +365,9 @@ class LoginPageController extends GetxController
 
                 getCaptcha(geeGt, geeChallenge, () async {
                   debugPrint("captchaData");
-                  debugPrint(captchaData);
-                  debugPrint(currentUri.queryParameters['tmp_token']!);
-                  debugPrint(geeChallenge);
+                  debugPrint('$captchaData');
+                  debugPrint('$currentUri.queryParameters['tmp_token']!');
+                  debugPrint('$geeChallenge');
 
                   var safeCenterSendSmsCodeRes =
                       await LoginHttp.safeCenterSmsCode(
@@ -506,7 +506,7 @@ class LoginPageController extends GetxController
       cid: selectedCountryCodeId['country_id'],
       key: key,
     );
-    debugPrint(res);
+    debugPrint('$res');
     if (res['status']) {
       SmartDialog.showToast('登录成功');
       var data = res['data'];
@@ -581,7 +581,7 @@ class LoginPageController extends GetxController
       gee_challenge: captchaData.geetest?.challenge,
       recaptcha_token: captchaData.token,
     );
-    debugPrint(res);
+    debugPrint('$res');
     if (res['status']) {
       SmartDialog.showToast('发送成功');
       smsSendTimestamp = DateTime.now().millisecondsSinceEpoch;

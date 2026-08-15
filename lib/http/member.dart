@@ -55,7 +55,7 @@ class MemberHttp {
         },
       ),
     );
-    debugPrint(res);
+    debugPrint('$res');
     if (res.data['code'] == 0) {
       return {
         'status': true,
@@ -431,7 +431,7 @@ class MemberHttp {
         if (currentMid != null) 'current_mid': currentMid,
       },
     );
-    debugPrint(res);
+    debugPrint('$res');
     if (res.data['code'] == 0) {
       return {
         'status': true,

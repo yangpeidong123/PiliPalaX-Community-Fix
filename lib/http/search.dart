@@ -122,7 +122,7 @@ class SearchHttp {
           'data': data,
         };
       } catch (err) {
-        debugPrint(err);
+        debugPrint('$err');
       }
     } else {
       return {
