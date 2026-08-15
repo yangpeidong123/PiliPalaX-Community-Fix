@@ -138,10 +138,10 @@ class LoginPageController extends GetxController
             .saveFromResponse(Uri.parse(url), cookies);
       }
       debugPrint('$cookieStrings');
-      debugPrint(Request.cookieManager.cookieJar
-          .loadForRequest(Uri.parse(HttpString.apiBaseUrl)));
+      debugPrint('${Request.cookieManager.cookieJar
+          .loadForRequest(Uri.parse(HttpString.apiBaseUrl))}');
       Request.dio.options.headers['cookie'] = cookieStrings;
-      debugPrint('$Request.dio.options');
+      debugPrint('${Request.dio.options}');
     } catch (e) {
       SmartDialog.showToast('设置登录态失败，$e');
     }
