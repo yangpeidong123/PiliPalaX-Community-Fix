@@ -56,18 +56,8 @@ jobs:
       - name: 安装Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.24.4
+          flutter-version: 3.29.0
           channel: stable
-
-      - name: 修复Flutter 3.24中文字重异常
-        if: startsWith(matrix.target_platform, 'android')
-        working-directory: ${{ env.FLUTTER_ROOT }}
-        run: |
-          git config user.name "orz12"
-          git config user.email "orz12@test.com"
-          curl https://gist.githubusercontent.com/VillagerTom/077315c7101182af8bf443bb506007d0/raw/6c2c735a761f5e819672680bbefe473b748aa211/flutter-3.24.4-fix.diff | git apply
-          git commit -am "fix font weight issue" 
-          flutter --version
 
       - name: 下载依赖
         run: flutter pub get
